@@ -34,7 +34,7 @@ export const GetMemoURL =  memo( () => {
         .then( (response) => { setLink(response.data); window.open(response.data); } ); 
     }, []);
 
-    if (!link) return null;
+    // if (!link) return null;
 
     return (
         <Stack spacing={6}>
