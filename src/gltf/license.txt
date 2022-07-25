@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hex Dumbbell 10kg
+* source:	https://sketchfab.com/3d-models/hex-dumbbell-10kg-750c69ba487a485da85800010687ca51
+* author:	Salim Rached (https://sketchfab.com/Salim.Rached)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hex Dumbbell 10kg" (https://sketchfab.com/3d-models/hex-dumbbell-10kg-750c69ba487a485da85800010687ca51) by Salim Rached (https://sketchfab.com/Salim.Rached) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
