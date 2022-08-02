@@ -3,6 +3,7 @@ import { Button, Stack } from '@chakra-ui/react'
 import { Heading } from '@chakra-ui/layout'
 import { AuthEth } from './AuthEth';
 import { GetMemoURL } from './GetSingleUseLink';
+import { EmailInterface } from './EmailInterface';
 import { Canvas } from '@react-three/fiber';
 import styled from "styled-components";
 import { OrbitControls } from '@react-three/drei';
@@ -16,29 +17,75 @@ import axios from 'axios';
 function App() {
   
   const { isAuthenticated, logout } = useMoralis();
-  
+  const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
+  const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false);
+
   if(isAuthenticated){
 
     // const contract = new Web3.eth.Contract(nftAbi, nftAddress);
     // const response = await contract.methods.altoid().send();
 
-    return(
+    const handleClickSingleUseLink = (e) => {
+      e.preventDefault();
+      setLinkButtonIsClicked(true);
+      axios.get( `https://php-url-request.herokuapp.com/web/index.php` )
+      .then( (response) => { window.open(response.data); } ); 
+    }
+
+    const handleClickEmailLink = (e) => {
+      e.preventDefault();
+      setEmailButtonIsClicked(true);
+    }
+
+    if(linkButtonIsClicked){      
+      return(
       <Stack spacing={3} align="center">  
         <img src={logo} alt="logo" height="100" width="100" />
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Membership Verification</Heading>
-        <Heading mt={6} mb={6} textAlign="center" size="xl">Verified! Redirecting...</Heading>
-        <GetMemoURL />
-        <Button onClick={() => logout()}>Logout</Button>
-        <Wrapper className="app">
-        <Canvas className="canvas" height="500px">
-          <OrbitControls enableZoom={false}/>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[-2,5,2]} intensity={1} />
-          {/* <Model /> */}
-        </Canvas>
-      </Wrapper>  
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>        
       </Stack>
-    )
+      )
+    } else if(emailButtonIsClicked) {
+      return(
+        <Stack spacing={3} align="center">  
+          <img src={logo} alt="logo" height="100" width="100" />
+          <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
+          {/* <GetMemoURL /> */}
+          
+          <EmailInterface />
+
+          <Button onClick={() => logout()}>Logout</Button>
+          <Wrapper className="app">
+          <Canvas className="canvas" height="500px">
+            <OrbitControls enableZoom={false}/>
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[-2,5,2]} intensity={1} />
+            {/* <Model /> */}
+          </Canvas>
+        </Wrapper>  
+        </Stack>
+      )
+    } else {
+      return(
+        <Stack spacing={3} align="center">  
+          <img src={logo} alt="logo" height="100" width="100" />
+          <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
+          {/* <GetMemoURL /> */}
+          
+          <Button onClick={handleClickSingleUseLink}>Partner Company 1 (Single-Use Link)</Button>
+          <Button onClick={handleClickEmailLink}>Partner Company 2 (Email Form)</Button>
+
+          <Button onClick={() => logout()}>Logout</Button>
+          <Wrapper className="app">
+          <Canvas className="canvas" height="500px">
+            <OrbitControls enableZoom={false}/>
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[-2,5,2]} intensity={1} />
+            {/* <Model /> */}
+          </Canvas>
+        </Wrapper>  
+        </Stack>
+      )
+    }
   }
 
 
