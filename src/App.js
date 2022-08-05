@@ -4,6 +4,8 @@ import { Heading } from '@chakra-ui/layout'
 import { AuthEth } from './AuthEth';
 import { GetMemoURL } from './GetSingleUseLink';
 import { EmailInterface } from './EmailInterface';
+import { EmailInterface2 } from './EmailInterface2';
+
 import { Canvas } from '@react-three/fiber';
 import styled from "styled-components";
 import { OrbitControls } from '@react-three/drei';
@@ -37,23 +39,48 @@ function App() {
       setEmailButtonIsClicked(true);
     }
 
+    const handleBackFromEmail = (e) => {
+      e.preventDefault();
+      setEmailButtonIsClicked(false);
+    }
+
+    const handleBackFromLink = (e) => {
+      e.preventDefault();
+      setLinkButtonIsClicked(false);
+    }
+
     if(linkButtonIsClicked){      
       return(
       <Stack spacing={3} align="center">  
-        <img src={logo} alt="logo" height="100" width="100" />
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>        
+        <a href="#" id="logo" onclick="document.location.href;return false;" >
+          <img src={logo} alt="logo" height="100" width="100" />
+        </a>
+        
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>  
+        <Heading mt={6} mb={6} textAlign="center" size="xl">Single-Use Link Utilized</Heading>   
+
+        <Button onClick={handleBackFromLink}>Back</Button>
+        <Button onClick={() => logout()}>Logout</Button>
+
+    
       </Stack>
       )
     } else if(emailButtonIsClicked) {
       return(
         <Stack spacing={3} align="center">  
+        <a href="#" id="logo" onclick="document.location.reload;return false;" >
           <img src={logo} alt="logo" height="100" width="100" />
-          <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
+        </a>          
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
           {/* <GetMemoURL /> */}
           
-          <EmailInterface />
+          <EmailInterface2 />
+          
+          <Button onClick={handleBackFromEmail}>Back</Button>
 
           <Button onClick={() => logout()}>Logout</Button>
+
+
           <Wrapper className="app">
           <Canvas className="canvas" height="500px">
             <OrbitControls enableZoom={false}/>
@@ -67,7 +94,9 @@ function App() {
     } else {
       return(
         <Stack spacing={3} align="center">  
-          <img src={logo} alt="logo" height="100" width="100" />
+          <a href="#" id="logo" onclick="document.location.href;return false;" >
+            <img src={logo} alt="logo" height="100" width="100" />
+          </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
           {/* <GetMemoURL /> */}
           
@@ -91,7 +120,9 @@ function App() {
 
   return (
     <Stack spacing={3} align="center"> 
-      <img src={logo} alt="logo" height="100" width="100"/>
+      <a href="#" id="logo" onclick="document.location.href;return false;" >
+        <img src={logo} alt="logo" height="100" width="100" />
+      </a>      
       <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Membership Verification</Heading>
       <Heading mt={6} mb={6} textAlign="center" size="xl">Single-use Partner Links</Heading>
       <AuthEth />
