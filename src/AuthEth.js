@@ -1,15 +1,48 @@
-import { useMoralis } from 'react-moralis'
 import { Button, Heading, Stack, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react'
-// import { useState } from 'react';
+import { useState } from 'react';
+import { ethers } from 'ethers';
 
 
   
-export const AuthEth = () => {
-    const { authenticate, isAuthenticating, authError } = useMoralis();
+export const AuthEth = async () => {
+    
+    const [walletAddress, setWalletAddress] = useState("");
+    const [provider, setProvider] = useState("");
+    
+    async function requestAccount() {
+        console.log('Requesting account...');
+    
+        // Check if Meta Mask Extension exists 
+        if(window.ethereum) {
+          console.log('detected');
+    
+          try {
+            const accounts = await window.ethereum.request({
+              method: "eth_requestAccounts",
+            });
+            setWalletAddress(accounts[0]);
+          } catch (error) {
+            console.log('Error connecting...');
+          }
+    
+        } else {
+          alert('Meta Mask not detected');
+        }
+    }
+    
+    // Create a provider to interact with a smart contract
+    async function connectWallet() {
+        if(typeof window.ethereum !== 'undefined') {
+          await requestAccount();
+    
+          let thisProvider = new ethers.providers.Web3Provider(window.ethereum);
+          setProvider(thisProvider);
+        }
+    }
 
     return (
         <Stack spacing={6}>
-            {authError && (
+            {/* {authError && (
                 <Alert
                 status='error'
                 variant='subtle'
@@ -28,9 +61,10 @@ export const AuthEth = () => {
                 </AlertDescription>
                 <CloseButton position="absolute" right="8px" top="8px" />
                 </Alert>
-            )}
+            )} */}
             <Heading mt={6} mb={6} textAlign="center" size="xl"></Heading>
-            <Button colorScheme="blue" isLoading={isAuthenticating} onClick={ () => authenticate({ type: 'eth', signingMessage:"Authenticating GFC Membership" }) }>Authenticate: Ethereum</Button>
+
+            <Button colorScheme="blue">Authenticate: Ethereum</Button>
             {/* <Text textAlign="center"><em>or</em></Text>
             <SignUp />
             <Text textAlign="center"><em>or</em></Text>
@@ -39,36 +73,3 @@ export const AuthEth = () => {
     )
 
 };
-
-// --- ELDER CODE from https://www.youtube.com/watch?v=iSAqAUi2yIw&ab_channel=MoralisWeb3 ---
-
-// const SignUp = () => {
-
-//     const {signup} = useMoralis();
-//     const [email, setEmail] = useState();
-//     const [password, setPassword] = useState();
-
-//     return (
-//     <Stack spacing={3}>
-//     <Input placeholder="Email" value={email} onChange={(event) => setEmail(event.currentTarget.value)} />
-//     <Input placeholder="Password" type="password" value={password} onChange={(event) => setPassword(event.currentTarget.value)} />
-//     <Button onClick={ () => signup(email, password, email) }>Sign up</Button>
-//     </Stack>
-//     )
-// }
-  
-  
-// const Login = () => {
-
-//     const {login} = useMoralis();
-//     const [email, setEmail] = useState();
-//     const [password, setPassword] = useState();
-
-//     return (
-//     <Stack spacing={3}>
-//         <Input placeholder="Email" value={email} onChange={(event) => setEmail(event.currentTarget.value)} />
-//         <Input placeholder="Password" type="password" value={password} onChange={(event) => setPassword(event.currentTarget.value)} />
-//         <Button onClick={ () => login(email, password) }>Login</Button>
-//     </Stack>
-//     )
-// }
