@@ -2,10 +2,10 @@ import { useFormik } from "formik";
 import { Input, Button, Textarea } from "@chakra-ui/react";
 import emailjs from '@emailjs/browser';
 
-export const EmailInterface2 = () => {
+export const EmailInterface2 = (props) => {
 	const formik = useFormik({
 		initialValues: {
-			from_name: '0x8eaFB616e4519578195b32C2d5e07578F2E1cB87@gfc.io',
+			from_name: props.userAddr,
 			message: '',
 		},
 		onSubmit: (values) => {

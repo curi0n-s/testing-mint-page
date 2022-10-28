@@ -21,25 +21,20 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
-  
-  const { address, isConnected } = useAccount({
-    onConnect(){
-      //await balance of GFC NFT
-      let balanceOfNft = 1;
-      if(balanceOfNft>0){setIsAuthenticated(true)}
-      else{console.log("no balance")}
-    },
+
+ console.log(`IS AUTHENTICATED?: ${isAuthenticated}`)
+  useAccount({
     onDisconnect(){
-      setIsAuthenticated(false)
+      setIsAuthenticated(false);
     }
-  })
-  
-  const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
-    connector: new InjectedConnector(),
   })
   const { disconnect } = useDisconnect()
 
+  let address = "test"
 
+  useEffect(() => {
+
+  },[])
 
   //===========================================================================
   // RENDERING
@@ -94,7 +89,7 @@ function App() {
         <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
           {/* <GetMemoURL /> */}
           
-          <EmailInterface2 />
+          <EmailInterface2 userAddress={address}/>
           
           <Button onClick={handleBackFromEmail}>Back</Button>
 
@@ -145,7 +140,7 @@ function App() {
       </a>      
       <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Membership Verification</Heading>
       <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading>
-      <AuthEth />
+      <AuthEth sendData={setIsAuthenticated}/>
       <Wrapper className="app">
         <Canvas className="canvas" height="500px">
           <OrbitControls enableZoom={false}/>
