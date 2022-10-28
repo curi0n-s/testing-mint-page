@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { WagmiConfig, createClient } from 'wagmi';
+import { getDefaultProvider } from 'ethers'
 
 const theme = extendTheme({
   config: {
@@ -10,12 +12,19 @@ const theme = extendTheme({
   }
 })
 
+const client = createClient({
+  autoConnect: true,
+  provider: getDefaultProvider(),
+})
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
+  <WagmiConfig client={client}>
     <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
+  </WagmiConfig>
   // </React.StrictMode>
 );
 
