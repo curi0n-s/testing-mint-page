@@ -29,9 +29,9 @@ export const AuthEth = (props) => {
   })
 
   useEffect(()=>{
-    console.log(`USER BALANCE: ${userBalance}`)
+    // console.log(`USER BALANCE: ${userBalance}`)
     if(userBalance>0){
-      console.log("user balance greater than 0")
+      // console.log("user balance greater than 0")
       props.sendData(true); 
       props.setAuthenticatedUser(address);
       // setIsHookActive(false);
@@ -48,7 +48,7 @@ export const AuthEth = (props) => {
 
   return (
       <Stack spacing={6}>
-          <Heading mt={6} mb={6} textAlign="center" size="xl"></Heading>
+          {/* <Heading mt={6} mb={6} textAlign="center" size="xl"></Heading> */}
           
           {isConnected && isHookActive && <CheckBalanceWrapper userAddress={address} setUserBalance={setUserBalance} balanceHasBeenUpdated={setBalanceHasBeenUpdated} />}
 

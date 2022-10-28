@@ -63,12 +63,12 @@ function App() {
 
     if(linkButtonIsClicked){      
       return(
-      <Stack spacing={3} align="center">  
+      <Stack spacing={6} align="center">  
         <a href="#" id="logo" onclick="document.location.href;return false;" >
           <img src={logo} alt="logo" height="100" width="100" />
         </a>
         
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>  
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>  
         <Heading mt={6} mb={6} textAlign="center" size="xl">Single-Use Link Utilized</Heading>   
 
         <Button onClick={handleBackFromLink}>Back</Button>
@@ -79,11 +79,11 @@ function App() {
       )
     } else if(emailButtonIsClicked) {
       return(
-        <Stack spacing={3} align="center">  
+        <Stack spacing={6} align="center">  
         <a href="#" id="logo" onclick="document.location.reload;return false;" >
           <img src={logo} alt="logo" height="100" width="100" />
         </a>          
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>
           {/* <GetMemoURL /> */}
           
           <EmailInterface2 userAddress={authdUser}/>
@@ -105,11 +105,12 @@ function App() {
       )
     } else {
       return(
-        <Stack spacing={3} align="center">  
+        <Stack spacing={6} align="center">  
           <a href="#" id="logo" onclick="document.location.href;return false;" >
             <img src={logo} alt="logo" height="100" width="100" />
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>
+
           {/* <GetMemoURL /> */}
           
           <Button onClick={handleClickSingleUseLink}>Partner Company 1 (Single-Use Link)</Button>
@@ -131,11 +132,11 @@ function App() {
 
 
   return (
-    <Stack spacing={3} align="center"> 
+    <Stack spacing={6} align="center"> 
       <a href="#" id="logo" onclick="document.location.href;return false;" >
         <img src={logo} alt="logo" height="100" width="100" />
       </a>      
-      <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Membership Verification</Heading>
+      <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>
       <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading>
       <AuthEth setAuthenticatedUser={setAuthdUser} sendData={setIsAuthenticated}/>
       <Wrapper className="app">

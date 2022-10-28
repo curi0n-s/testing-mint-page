@@ -16,7 +16,7 @@ console.log(contractRead.data)
 
         props.setUserBalance(decimalBalance)
         props.balanceHasBeenUpdated(true)
-        console.log(`DECIMAL_BALANCE_CHECK: ${decimalBalance}`)
+        // console.log(`DECIMAL_BALANCE_CHECK: ${decimalBalance}`)
 
     }, [contractRead])
 
