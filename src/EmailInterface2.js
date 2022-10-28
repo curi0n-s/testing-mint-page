@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser';
 export const EmailInterface2 = (props) => {
 	const formik = useFormik({
 		initialValues: {
-			from_name: props.userAddr,
+			from_name: props.userAddress,
 			message: '',
 		},
 		onSubmit: (values) => {

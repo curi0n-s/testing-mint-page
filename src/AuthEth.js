@@ -33,6 +33,7 @@ export const AuthEth = (props) => {
     if(userBalance>0){
       console.log("user balance greater than 0")
       props.sendData(true); 
+      props.setAuthenticatedUser(address);
       // setIsHookActive(false);
     } else{      
       props.sendData(false); 

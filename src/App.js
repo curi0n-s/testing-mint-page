@@ -21,6 +21,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
+  const [authdUser, setAuthdUser] = useState("");
 
  console.log(`IS AUTHENTICATED?: ${isAuthenticated}`)
   useAccount({
@@ -31,10 +32,6 @@ function App() {
   const { disconnect } = useDisconnect()
 
   let address = "test"
-
-  useEffect(() => {
-
-  },[])
 
   //===========================================================================
   // RENDERING
@@ -89,7 +86,7 @@ function App() {
         <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Holder Dashboard</Heading>
           {/* <GetMemoURL /> */}
           
-          <EmailInterface2 userAddress={address}/>
+          <EmailInterface2 userAddress={authdUser}/>
           
           <Button onClick={handleBackFromEmail}>Back</Button>
 
@@ -140,7 +137,7 @@ function App() {
       </a>      
       <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Membership Verification</Heading>
       <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading>
-      <AuthEth sendData={setIsAuthenticated}/>
+      <AuthEth setAuthenticatedUser={setAuthdUser} sendData={setIsAuthenticated}/>
       <Wrapper className="app">
         <Canvas className="canvas" height="500px">
           <OrbitControls enableZoom={false}/>
