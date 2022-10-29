@@ -68,11 +68,11 @@ function App() {
           <img src={logo} alt="logo" height="100" width="100" />
         </a>
         
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>  
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>  
         <Heading mt={6} mb={6} textAlign="center" size="xl">Single-Use Link Utilized</Heading>   
 
         <Button onClick={handleBackFromLink}>Back</Button>
-        <Button onClick={() => disconnect()}>Disconnect</Button>
+        {/* <Button onClick={() => disconnect()}>Disconnect</Button> */}
 
     
       </Stack>
@@ -83,10 +83,10 @@ function App() {
         <a href="#" id="logo" onclick="document.location.reload;return false;" >
           <img src={logo} alt="logo" height="100" width="100" />
         </a>          
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>         
+        <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
           <EmailInterface2 userAddress={authdUser}/>
           <Button onClick={handleBackFromEmail}>Back</Button>
-          <Button onClick={() => disconnect()}>Disconnect</Button>
+          {/* <Button onClick={() => disconnect()}>Disconnect</Button> */}
           <Wrapper className="app">
           <Canvas className="canvas" height="500px">
             <OrbitControls enableZoom={false}/>
@@ -103,7 +103,7 @@ function App() {
           <a href="#" id="logo" onclick="document.location.href;return false;" >
             <img src={logo} alt="logo" height="100" width="100" />
           </a>          
-          <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>
+          <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
 
           {/* <GetMemoURL /> */}
           
@@ -130,7 +130,7 @@ function App() {
       <a href="#" id="logo" onclick="document.location.href;return false;" >
         <img src={logo} alt="logo" height="100" width="100" />
       </a>      
-      <Heading mt={6} mb={6} textAlign="center" size="2xl">Global Fit Club Member Dashboard</Heading>
+      <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
       <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading>
       <AuthEth setAuthenticatedUser={setAuthdUser} sendData={setIsAuthenticated}/>
       <Wrapper className="app">

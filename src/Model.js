@@ -6,5 +6,7 @@ export default function Model() {
         <boxBufferGeometry attach="geometry" args={[1,1,1]}/> 
         <meshLambertMaterial attach="material" color="purple" />
     </mesh>
+
+
     );
 }

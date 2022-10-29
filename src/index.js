@@ -9,7 +9,7 @@ import { chain, configureChains } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon],
+  [chain.goerli, chain.polygon],
   [infuraProvider({ apiKey: 'f45ec1b38a7941229ee4ee8a49bf4e1c' })],
 )
 

@@ -1,13 +1,8 @@
-import { Button, Heading, Stack, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react'
+import { Button, Stack, Alert, Spinner } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
 import {
   useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-  useContractRead 
+  useConnect
 } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { CheckBalanceWrapper } from './CheckBalanceWrapper';
@@ -15,10 +10,11 @@ import { CheckBalanceWrapper } from './CheckBalanceWrapper';
 export const AuthEth = (props) => {
   
   const [isHookActive, setIsHookActive] = useState(false);
-  const [userBalance, setUserBalance] = useState(0);
+  const [userSilverBalance, setUserSilverBalance] = useState(0);
+  const [userGoldBalance, setUserGoldBalance] = useState(0);
   const [balanceHasBeenUpdated, setBalanceHasBeenUpdated] = useState(false);
     
-  console.log(`Balance has been updated: ${balanceHasBeenUpdated}`)
+  console.log(`Balance has been updated (Silver, Gold): ${balanceHasBeenUpdated}, ${userSilverBalance}, ${userGoldBalance}`)
 
 
   const {address, isConnected} = useAccount({
@@ -30,7 +26,7 @@ export const AuthEth = (props) => {
 
   useEffect(()=>{
     // console.log(`USER BALANCE: ${userBalance}`)
-    if(userBalance>0){
+    if(userSilverBalance>0 || userGoldBalance>0){
       // console.log("user balance greater than 0")
       props.sendData(true); 
       props.setAuthenticatedUser(address);
@@ -40,21 +36,28 @@ export const AuthEth = (props) => {
 ;     console.log("no balance")}
   },[balanceHasBeenUpdated])
   
-  const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
+  const { connect, isLoading } = useConnect({
     connector: new InjectedConnector(),
   })
 
 
 
   return (
-      <Stack spacing={6}>
-          {/* <Heading mt={6} mb={6} textAlign="center" size="xl"></Heading> */}
-          
-          {isConnected && isHookActive && <CheckBalanceWrapper userAddress={address} setUserBalance={setUserBalance} balanceHasBeenUpdated={setBalanceHasBeenUpdated} />}
-
-          <Button colorScheme="blue" onClick={() => connect()}>Authenticate: Ethereum</Button>
+      <Stack spacing={6} align={"center"}>
+          {isConnected && isHookActive && <CheckBalanceWrapper userAddress={address} setUserSilverBalance={setUserSilverBalance} setUserGoldBalance={setUserGoldBalance} balanceHasBeenUpdated={setBalanceHasBeenUpdated} />}
+          <Button colorScheme="blue" onClick={() => {connect()}}>Authenticate: Ethereum</Button>
+          {isLoading && <Spinner
+                            thickness='4px'
+                            speed='0.65s'
+                            emptyColor='gray.200'
+                            color='blue.500'
+                            size='xl'
+                          />
+          }
+          {(balanceHasBeenUpdated&&userSilverBalance===0&&userGoldBalance===0) && <Alert mt={6} mb={6} textAlign="center" size="xl">Unable to Authenticate!</Alert> }
 
       </Stack>
+
   )
 
 };
