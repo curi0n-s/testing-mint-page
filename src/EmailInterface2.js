@@ -1,8 +1,13 @@
 import { useFormik } from "formik";
-import { Stack, Input, Button, Textarea } from "@chakra-ui/react";
+import { Stack, Input, Button, Textarea, Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import emailjs from '@emailjs/browser';
 
 export const EmailInterface2 = (props) => {
+	
+	const [sentState, setSentState] = useState(false);
+	const [isSending, setIsSending] = useState(false);
+
 	const formik = useFormik({
 		initialValues: {
 			from_name: props.userAddress,
@@ -11,6 +16,7 @@ export const EmailInterface2 = (props) => {
 		onSubmit: (values) => {
 		  alert(JSON.stringify(values, null, 2))
 		  sendEmail(values);
+		  setIsSending(true);
 		}
 	})
 
@@ -20,6 +26,8 @@ export const EmailInterface2 = (props) => {
 		emailjs.send('service_1t5sfk8', 'template_7m8fg8n', values, 'sgk0lRe-Hctm-O0VB')
 		  .then((result) => {
 			  console.log(result.text);
+			  setIsSending(false);
+			  setSentState(true);
 		  }, (error) => {
 			  console.log(error.text);
 		  });
@@ -48,9 +56,21 @@ export const EmailInterface2 = (props) => {
 				size='lg'
 				height='200px'
 				padding={'20px'}
-				/>				
+				/>	
+				<div>   				
+					{!sentState ? <Button type='submit' value="Send">Submit</Button>	: <Button colorScheme={'green'}>Sent!</Button> }
+					{isSending && <Spinner
+								align='center'
+								thickness='4px'
+								speed='0.65s'
+								emptyColor='gray.200'
+								color='blue.500'
+								size='lg'
+							/>
+					}
+				</div>	
+
 			</form>
-			<Button type='submit' value="Send">Submit</Button>
 
 		</Stack>
 	)
