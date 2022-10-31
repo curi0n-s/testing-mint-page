@@ -88,6 +88,8 @@ function useEffectAllDepsChange(fn, deps) {
   // RENDERING
   //===========================================================================
 
+  // see https://chakra-ui.com/docs/components/tabs --> onChange for more on preserving tab session/making navigation seamless
+
   if(isAuthenticated){
 
     const handlePartnerClick = (_companyName, _contactType, _tempURL, _emailjsID) => {
@@ -130,14 +132,13 @@ function useEffectAllDepsChange(fn, deps) {
       return(
         <Tabs variant='soft-rounded' colorScheme='green' align='center'>
             <a href="#" id="logo" onclick="document.location.href;return false;" >
-              <img src={logo} alt="logo" height="100" width="100" align="center" />
+              <img src={logo} alt="logo" height="70" width="70" align="center" />
             </a>          
-            <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
+            <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
           <TabList>
             <Tab>Deals</Tab>
             <Tab>Links</Tab>
             <Tab>Guide</Tab>
-            <Tab>Terms of Service</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -160,12 +161,6 @@ function useEffectAllDepsChange(fn, deps) {
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>            
             </TabPanel>
-            <TabPanel>
-              <Stack spacing={6} align="center">  
-                <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Go Here</Heading>          
-                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
-              </Stack>
-            </TabPanel>
 
           </TabPanels>
 
@@ -178,10 +173,10 @@ function useEffectAllDepsChange(fn, deps) {
   return (
     <Stack spacing={6} align="center"> 
       <a href="#" id="logo" onclick="document.location.href;return false;" >
-        <img src={logo} alt="logo" height="100" width="100" />
+        <img src={logo} alt="logo" height="70" width="70" />
       </a>      
 
-      <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
+      <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
       {/* <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading> */}
       <AuthEth setAuthenticatedUser={setAuthdUser} sendData={setIsAuthenticated}/>
       <Wrapper className="app">
@@ -192,6 +187,8 @@ function useEffectAllDepsChange(fn, deps) {
           <Model />
         </Canvas>
       </Wrapper>
+      <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Link Here</Heading>          
+
     
     </Stack>
   );
