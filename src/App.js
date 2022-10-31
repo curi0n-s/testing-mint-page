@@ -78,7 +78,7 @@ function useEffectAllDepsChange(fn, deps) {
     let inputVal = false;
     if(partnerButtonWasClicked){inputVal = true;}
     setEmailButtonIsClicked(inputVal);
-  }, [partnerButtonWasClicked, emailJsId])
+  }, [emailJsId])
 
   const { disconnect } = useDisconnect()
 
@@ -114,7 +114,7 @@ function useEffectAllDepsChange(fn, deps) {
     if(linkButtonIsClicked){      
       return(
         <Stack spacing={6} align="center">  
-          <OneTimeLinkConfirmation setLinkButtonIsClicked={setLinkButtonIsClicked}/>
+          <OneTimeLinkConfirmation setLinkButtonIsClicked={setLinkButtonIsClicked} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
         </Stack>
       )
     } else if(emailButtonIsClicked) {

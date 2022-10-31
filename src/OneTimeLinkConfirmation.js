@@ -11,6 +11,7 @@ export const OneTimeLinkConfirmation = (props) => {
     const handleBackFromLink = (e) => {
         // e.preventDefault();
         props.setLinkButtonIsClicked(false);   
+        props.setEmailButtonIsClicked(false);
     }
 
     return(
