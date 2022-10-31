@@ -12,6 +12,8 @@ export const PartnerList = (props) => {
     const handlePartnerClick = (e, _companyName, _contactType, _tempURL, _emailjsID) => {
         e.preventDefault();
         props.handlePartnerClick(_companyName, _contactType, _tempURL, _emailjsID);
+        props.setNumCalls(props.numCalls+1);
+
     }
     let partnerButtonsArray = []
     const PartnerButtons = PARTNER_DATA.forEach(index => {
