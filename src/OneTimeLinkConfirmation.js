@@ -12,6 +12,7 @@ export const OneTimeLinkConfirmation = (props) => {
         // e.preventDefault();
         props.setLinkButtonIsClicked(false);   
         props.setEmailButtonIsClicked(false);
+        props.setNumCalls(props.numCalls+1);
     }
 
     return(

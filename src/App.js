@@ -26,6 +26,7 @@ function App() {
   const [authdUser, setAuthdUser] = useState("");
 
   const [partnerButtonWasClicked, setPartnerButtonWasClicked] = useState(false);
+  const [companyName, setCompanyName] = useState("");
   const [contactType, setContactType] = useState("");
   const [tempURL, setTempURL] = useState("");
   const [emailJsId, setEmailJsId] = useState("");
@@ -33,6 +34,8 @@ function App() {
 
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
+
+  const[numCalls, setNumCalls]=useState(0);
   
   useAccount({
     onDisconnect(){
@@ -76,9 +79,10 @@ function useEffectAllDepsChange(fn, deps) {
 }
   useEffectAllDepsChange(()=>{
     let inputVal = false;
+    console.log(numCalls)
     if(partnerButtonWasClicked){inputVal = true;}
     setEmailButtonIsClicked(inputVal);
-  }, [emailJsId])
+  }, [numCalls, emailJsId])
 
   const { disconnect } = useDisconnect()
 
@@ -89,12 +93,14 @@ function useEffectAllDepsChange(fn, deps) {
   if(isAuthenticated){
 
     const handlePartnerClick = (_companyName, _contactType, _tempURL, _emailjsID) => {
-      console.log(`IN PARENT, CONTACT_TYPE, EMAILJS_ID: ${_companyName} ${_contactType} ${_emailjsID}`);
+      // console.log(`IN PARENT, CONTACT_TYPE, EMAILJS_ID: ${_companyName} ${_contactType} ${_emailjsID}`);
       
       setPartnerButtonWasClicked(true);
+      setCompanyName(_companyName);
       setContactType(_contactType);
       setTempURL(_tempURL);
       setEmailJsId(_emailjsID);
+      setNumCalls(numCalls+1);
 
       if(_contactType==="1"){
         console.log(emailJsId)
@@ -114,7 +120,7 @@ function useEffectAllDepsChange(fn, deps) {
     if(linkButtonIsClicked){      
       return(
         <Stack spacing={6} align="center">  
-          <OneTimeLinkConfirmation setLinkButtonIsClicked={setLinkButtonIsClicked} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
+          <OneTimeLinkConfirmation numCalls={numCalls} setLinkButtonIsClicked={setLinkButtonIsClicked} setEmailButtonIsClicked={setEmailButtonIsClicked} setNumCalls={setNumCalls}/>
         </Stack>
       )
     } else if(emailButtonIsClicked) {
@@ -124,7 +130,7 @@ function useEffectAllDepsChange(fn, deps) {
             <img src={logo} alt="logo" height="100" width="100" />
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
-          <EmailInterface userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
+          <EmailInterface numCalls={numCalls} setNumCalls={setNumCalls} userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
         </Stack>
       )
     } else {
@@ -135,7 +141,7 @@ function useEffectAllDepsChange(fn, deps) {
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
           <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
-          <PartnerList handlePartnerClick={handlePartnerClick}/>         
+          <PartnerList numCalls={numCalls} setNumCalls={setNumCalls} handlePartnerClick={handlePartnerClick}/>         
 
           <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
         </Stack>
