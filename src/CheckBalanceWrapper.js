@@ -1,6 +1,6 @@
 import {useContractReads} from 'wagmi'
 import { useEffect, useState } from 'react';
-import { NFT_ABI, NFT_ADDRESS } from "./nft_config"
+import { NFT_ABI, NFT_ADDRESS } from "./config"
 // add check of balance for each tier of 1155! i.e. include checkTier function in contract.
 
 export const CheckBalanceWrapper = (props) => {

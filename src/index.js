@@ -7,10 +7,11 @@ import { WagmiConfig, createClient } from 'wagmi';
 import { getDefaultProvider } from 'ethers'
 import { chain, configureChains } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
+import { INFURA_API_KEY } from "./config"
 
 const { chains, provider } = configureChains(
   [chain.goerli, chain.polygon],
-  [infuraProvider({ apiKey: 'f45ec1b38a7941229ee4ee8a49bf4e1c' })],
+  [infuraProvider({ apiKey: INFURA_API_KEY })],
 )
 
 const theme = extendTheme({

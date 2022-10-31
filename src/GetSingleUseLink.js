@@ -1,6 +1,7 @@
 import { Button, Heading, Stack, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react'
 import axios from 'axios';
 import { useState, useEffect, memo } from 'react';
+import { TEMPORARY_URL_REQUEST } from "./config";
 
 export const GetMemoURL =  memo( () => {
 
@@ -8,7 +9,7 @@ export const GetMemoURL =  memo( () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        axios.get( `https://php-url-request.herokuapp.com/web/index.php` )
+        axios.get( TEMPORARY_URL_REQUEST )
         .then( (response) => { window.open(response.data); } ); 
     }
 
