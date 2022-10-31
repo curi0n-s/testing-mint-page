@@ -3,7 +3,7 @@ import { Heading } from '@chakra-ui/layout'
 import { Canvas } from '@react-three/fiber';
 import styled from "styled-components";
 import { OrbitControls } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
@@ -26,6 +26,10 @@ function App() {
   const [authdUser, setAuthdUser] = useState("");
 
   const [partnerButtonWasClicked, setPartnerButtonWasClicked] = useState(false);
+  const [contactType, setContactType] = useState("");
+  const [tempURL, setTempURL] = useState("");
+  const [emailJsId, setEmailJsId] = useState("");
+
 
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
@@ -36,6 +40,46 @@ function App() {
     }
   })
 
+// taken from https://usehooks.com/usePrevious/
+function usePrevious(value) {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  
+  return ref.current;
+}
+
+function useEffectAllDepsChange(fn, deps) {
+  const prevDeps = usePrevious(deps);
+  const changeTarget = useRef();
+
+  useEffect(() => {
+    // nothing to compare to yet
+    if (changeTarget.current === undefined) {
+      changeTarget.current = prevDeps;
+    }
+
+    // we're mounting, so call the callback
+    if (changeTarget.current === undefined) {
+      return fn();
+    }
+
+    // make sure every dependency has changed
+    if (changeTarget.current.every((dep, i) => dep !== deps[i])) {
+      changeTarget.current = deps;
+
+      return fn();
+    }
+  }, [fn, prevDeps, deps]);
+}
+  useEffectAllDepsChange(()=>{
+    let inputVal = false;
+    if(partnerButtonWasClicked){inputVal = true;}
+    setEmailButtonIsClicked(inputVal);
+  }, [partnerButtonWasClicked, emailJsId])
+
   const { disconnect } = useDisconnect()
 
   //===========================================================================
@@ -44,48 +88,43 @@ function App() {
 
   if(isAuthenticated){
 
-    const handleClickSingleUseLink = (e) => {
-      e.preventDefault();
-      setLinkButtonIsClicked(true);
-      axios.get( TEMPORARY_URL_REQUEST )
-      .then( (response) => { window.open(response.data); } ); 
-    }
-
-    const handleClickEmailLink = (e) => {
-      e.preventDefault();
-      setEmailButtonIsClicked(true);
-    }
-
-    const handlePartnerClick = (e) => {
-      e.preventDefault();
+    const handlePartnerClick = (_companyName, _contactType, _tempURL, _emailjsID) => {
+      console.log(`IN PARENT, CONTACT_TYPE, EMAILJS_ID: ${_companyName} ${_contactType} ${_emailjsID}`);
+      
       setPartnerButtonWasClicked(true);
+      setContactType(_contactType);
+      setTempURL(_tempURL);
+      setEmailJsId(_emailjsID);
+
+      if(_contactType==="1"){
+        console.log(emailJsId)
+
+        console.log("setting email clicked to true...")
+        console.log(`emailButtonIsClicked: ${emailButtonIsClicked}`)
+      } else {
+        setLinkButtonIsClicked(true);
+        console.log("ONE_TIME_LINK_TRIGGERED")
+        // axios.get( TEMPORARY_URL_REQUEST )
+        // .then( (response) => { window.open(response.data); } ); 
+      }
+
+
     }
-
-    const handleBackFromEmail = (e) => {
-      e.preventDefault();
-      setEmailButtonIsClicked(false);
-    }
-
-    // const handleBackFromLink = (e) => {
-    //   e.preventDefault();
-    //   setLinkButtonIsClicked(false);
-    // }
-
+        
     if(linkButtonIsClicked){      
       return(
-        <OneTimeLinkConfirmation setLinkButtonIsClicked={setLinkButtonIsClicked}/>
+        <Stack spacing={6} align="center">  
+          <OneTimeLinkConfirmation setLinkButtonIsClicked={setLinkButtonIsClicked}/>
+        </Stack>
       )
     } else if(emailButtonIsClicked) {
       return(
         <Stack spacing={6} align="center">  
-        <a href="#" id="logo" onclick="document.location.reload;return false;" >
-          <img src={logo} alt="logo" height="100" width="100" />
-        </a>          
-        <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
-          <EmailInterface userAddress={authdUser}/>
-          <Button onClick={handleBackFromEmail}>Back</Button>
-          <Wrapper className="app">
-        </Wrapper>  
+          <a href="#" id="logo" onclick="document.location.reload;return false;" >
+            <img src={logo} alt="logo" height="100" width="100" />
+          </a>          
+          <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
+          <EmailInterface userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
         </Stack>
       )
     } else {
@@ -95,20 +134,10 @@ function App() {
             <img src={logo} alt="logo" height="100" width="100" />
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
-
-          {/* <GetMemoURL /> */}
-          
+          <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
           <PartnerList handlePartnerClick={handlePartnerClick}/>         
 
-          <Button onClick={() => disconnect()}>Disconnect</Button>
-          <Wrapper className="app">
-          <Canvas className="canvas" height="500px">
-            <OrbitControls enableZoom={false}/>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[-2,5,2]} intensity={1} />
-            {/* <Model /> */}
-          </Canvas>
-        </Wrapper>  
+          <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
         </Stack>
       )
     }
@@ -120,6 +149,7 @@ function App() {
       <a href="#" id="logo" onclick="document.location.href;return false;" >
         <img src={logo} alt="logo" height="100" width="100" />
       </a>      
+
       <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
       {/* <Heading mt={6} mb={6} textAlign="center" size="xl">Connect to Authenticate</Heading> */}
       <AuthEth setAuthenticatedUser={setAuthdUser} sendData={setIsAuthenticated}/>
@@ -131,6 +161,7 @@ function App() {
           <Model />
         </Canvas>
       </Wrapper>
+    
     </Stack>
   );
 }

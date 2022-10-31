@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { Stack, Input, Button, Textarea, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import emailjs from '@emailjs/browser';
-import { EMAILJS_SERVICE_ID_SAMPLE, EMAILJS_TEMPLATE_ID, EMAILJS_SENDER_PUBLIC_KEY } from "./config"
+import { EMAILJS_TEMPLATE_ID, EMAILJS_SENDER_PUBLIC_KEY } from "./config"
 
 
 export const EmailInterface = (props) => {
@@ -10,10 +10,19 @@ export const EmailInterface = (props) => {
 	const [sentState, setSentState] = useState(false);
 	const [isSending, setIsSending] = useState(false);
 
+	useEffect(()=>{
+		window.alert = function(){return null;}; // disable alerts	
+	},[])
+
+	const handleBackFromEmail = (e) => {
+		e.preventDefault();
+		props.setEmailButtonIsClicked(false);
+	}
+
 	const formik = useFormik({
 		initialValues: {
 			from_name: props.userAddress,
-			message: 'Type messsage...',
+			message: '',
 		},
 		onSubmit: (values) => {
 		  alert(JSON.stringify(values, null, 2))
@@ -25,7 +34,7 @@ export const EmailInterface = (props) => {
 	const sendEmail = (values) => {
 		//e.preventDefault();
 	
-		emailjs.send(EMAILJS_SERVICE_ID_SAMPLE, EMAILJS_TEMPLATE_ID, values, EMAILJS_SENDER_PUBLIC_KEY)
+		emailjs.send(props.emailJsId, EMAILJS_TEMPLATE_ID, values, EMAILJS_SENDER_PUBLIC_KEY)
 		  .then((result) => {
 			  console.log(result.text);
 			  setIsSending(false);
@@ -60,19 +69,19 @@ export const EmailInterface = (props) => {
 				padding={'20px'}
 				/>	
 				<div>   				
-					{!sentState ? <Button type='submit' value="Send">Submit</Button>	: <Button colorScheme={'green'}>Sent!</Button> }
-					{isSending && <Spinner
-						align='center'
-						thickness='4px'
-						speed='0.65s'
-						emptyColor='gray.200'
-						color='blue.500'
-						size='lg'
-						/>
+					{!sentState ? 
+						(isSending ? 
+							<Button isLoading loadingText='Sending...' type='submit' value="Send"></Button>	
+							: <Button type='submit' value="Send">Send</Button>
+						)
+						: <Button colorScheme={'green'}>Sent!</Button> 
 					}
+
 				</div>	
 
 			</form>
+			<Button onClick={handleBackFromEmail}>Back</Button>
+
 
 		</Stack>
 	)
