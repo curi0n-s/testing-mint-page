@@ -122,9 +122,9 @@ function useEffectAllDepsChange(fn, deps) {
       return(
         <Stack spacing={6} align="center">  
           <a href="#" id="logo" onclick="document.location.reload;return false;" >
-            <img src={logo} alt="logo" height="100" width="100" />
+            <img src={logo} alt="logo" height="70" width="70" />
           </a>          
-          <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
+          <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>         
         <EmailInterface setPartnerButtonWasClicked={setPartnerButtonWasClicked} userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
         </Stack>
       )

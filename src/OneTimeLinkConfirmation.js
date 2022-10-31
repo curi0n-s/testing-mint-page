@@ -19,10 +19,10 @@ export const OneTimeLinkConfirmation = (props) => {
     return(
         <Stack spacing={6} align="center">  
             <a href="#" id="logo" onclick="document.location.href;return false;" >
-            <img src={logo} alt="logo" height="100" width="100" />
+            <img src={logo} alt="logo" height="70" width="70" />
             </a>
-            <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>  
-            <Heading mt={6} mb={6} textAlign="center" size="xl">Single-Use Link Utilized</Heading>   
+            <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
+            <Heading mt={6} mb={6} textAlign="center" size="sm">Single-Use Link Utilized</Heading>   
             <Button onClick={handleBackFromLink}>Back</Button>   
         </Stack>
     )
