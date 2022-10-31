@@ -1,11 +1,6 @@
-export const GFC_COMPANY_ID = "1"
-export const GFC_COMPANY_EMAIL_JS_SERVICE_ID = "service_0vp6cgg"
-export const SAMPLE_COMPANY_ID = "2"
-export const SAMPLE_COMPANY_EMAIL_JS_SERVICE_ID = "service_0vp6cgg"
-
-export const EMAILJS_SERVICE_ID_SAMPLE = "service_0vp6cgg"; // add job ID per new destination, and assign to each new email interface component
-export const EMAILJS_TEMPLATE_ID = "template_7m8fg8n";
-export const EMAILJS_SENDER_PUBLIC_KEY = "sgk0lRe-Hctm-O0VB";
+export const EMAILJS_SERVICE_ID_SAMPLE = "service_cj29t2l"; // add job ID per new destination, and assign to each new email interface component
+export const EMAILJS_TEMPLATE_ID = "template_g5fy0jr";
+export const EMAILJS_SENDER_PUBLIC_KEY = "RlkbKU4PBW5hI4Lbt";
 
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
 export const NFT_ADDRESS = "0xa6877252aEa1C3D5674F9fF22e2E6415fD7fE7f8";

@@ -12,7 +12,7 @@ export const PARTNER_DATA = [
     COMPANY_NAME: "F45",
     CONTACT_TYPE: "1",
     TEMP_URL_REQUEST_ID: "na",
-    EMAILJS_SERVICE_ID: "service_0vp6cgg",
+    EMAILJS_SERVICE_ID: "service_cj29t2l",
     IMAGE_PATH: "/android-chrome-192x192.png"
   },
   {

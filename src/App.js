@@ -8,6 +8,7 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 //locals
 import { TEMPORARY_URL_REQUEST } from "./config"
@@ -127,16 +128,48 @@ function useEffectAllDepsChange(fn, deps) {
       )
     } else {
       return(
-        <Stack spacing={6} align="center">  
-          <a href="#" id="logo" onclick="document.location.href;return false;" >
-            <img src={logo} alt="logo" height="100" width="100" />
-          </a>          
-          <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
-          <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
-          <PartnerList handlePartnerClick={handlePartnerClick}/>         
+        <Tabs variant='soft-rounded' colorScheme='green' align='center'>
+            <a href="#" id="logo" onclick="document.location.href;return false;" >
+              <img src={logo} alt="logo" height="100" width="100" align="center" />
+            </a>          
+            <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
+          <TabList>
+            <Tab>Deals</Tab>
+            <Tab>Links</Tab>
+            <Tab>Guide</Tab>
+            <Tab>Terms of Service</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <Heading mt={6} mb={6} textAlign="center" size="sm">Deal Details in Drop-Down Here</Heading>          
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
+                <PartnerList handlePartnerClick={handlePartnerClick}/>         
 
-          <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
-        </Stack>
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>              
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <Heading mt={6} mb={6} textAlign="center" size="sm">Guide Goes Here</Heading>          
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>            
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Go Here</Heading>          
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>
+            </TabPanel>
+
+          </TabPanels>
+
+        </Tabs>
       )
     }
   }
