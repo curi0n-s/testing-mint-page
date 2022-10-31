@@ -17,7 +17,8 @@ export const EmailInterface = (props) => {
 	const handleBackFromEmail = (e) => {
 		e.preventDefault();
 		props.setEmailButtonIsClicked(false);
-		props.setNumCalls(props.numCalls+1);
+		props.setPartnerButtonWasClicked(false);
+
 
 	}
 

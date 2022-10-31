@@ -34,8 +34,6 @@ function App() {
 
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
-
-  const[numCalls, setNumCalls]=useState(0);
   
   useAccount({
     onDisconnect(){
@@ -79,10 +77,9 @@ function useEffectAllDepsChange(fn, deps) {
 }
   useEffectAllDepsChange(()=>{
     let inputVal = false;
-    console.log(numCalls)
     if(partnerButtonWasClicked){inputVal = true;}
     setEmailButtonIsClicked(inputVal);
-  }, [numCalls, emailJsId])
+  }, [partnerButtonWasClicked])
 
   const { disconnect } = useDisconnect()
 
@@ -100,13 +97,9 @@ function useEffectAllDepsChange(fn, deps) {
       setContactType(_contactType);
       setTempURL(_tempURL);
       setEmailJsId(_emailjsID);
-      setNumCalls(numCalls+1);
 
       if(_contactType==="1"){
         console.log(emailJsId)
-
-        console.log("setting email clicked to true...")
-        console.log(`emailButtonIsClicked: ${emailButtonIsClicked}`)
       } else {
         setLinkButtonIsClicked(true);
         console.log("ONE_TIME_LINK_TRIGGERED")
@@ -114,13 +107,12 @@ function useEffectAllDepsChange(fn, deps) {
         // .then( (response) => { window.open(response.data); } ); 
       }
 
-
     }
         
     if(linkButtonIsClicked){      
       return(
         <Stack spacing={6} align="center">  
-          <OneTimeLinkConfirmation numCalls={numCalls} setLinkButtonIsClicked={setLinkButtonIsClicked} setEmailButtonIsClicked={setEmailButtonIsClicked} setNumCalls={setNumCalls}/>
+          <OneTimeLinkConfirmation setPartnerButtonWasClicked={setPartnerButtonWasClicked} setLinkButtonIsClicked={setLinkButtonIsClicked} setEmailButtonIsClicked={setEmailButtonIsClicked} />
         </Stack>
       )
     } else if(emailButtonIsClicked) {
@@ -130,7 +122,7 @@ function useEffectAllDepsChange(fn, deps) {
             <img src={logo} alt="logo" height="100" width="100" />
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>         
-          <EmailInterface numCalls={numCalls} setNumCalls={setNumCalls} userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
+        <EmailInterface setPartnerButtonWasClicked={setPartnerButtonWasClicked} userAddress={authdUser} emailJsId={emailJsId} setEmailButtonIsClicked={setEmailButtonIsClicked}/>
         </Stack>
       )
     } else {
@@ -141,7 +133,7 @@ function useEffectAllDepsChange(fn, deps) {
           </a>          
           <Heading mt={6} mb={6} textAlign="center" size="2xl">Member Dashboard</Heading>
           <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
-          <PartnerList numCalls={numCalls} setNumCalls={setNumCalls} handlePartnerClick={handlePartnerClick}/>         
+          <PartnerList handlePartnerClick={handlePartnerClick}/>         
 
           <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
         </Stack>
