@@ -18,6 +18,8 @@ import Model from './Model';
 import logo from './gfclogo.png'
 import { OneTimeLinkConfirmation } from "./OneTimeLinkConfirmation";
 import { PartnerList } from "./PartnerList";
+import { DealListAccordion } from './DealListAccordion';
+import { UserProfile } from './UserProfile';
 
 
 function App() {
@@ -137,17 +139,19 @@ function useEffectAllDepsChange(fn, deps) {
             <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
           <TabList>
             <Tab>Deals</Tab>
-            <Tab>Links</Tab>
-            <Tab>Guide</Tab>
+            {/* <Tab>Links</Tab>
+            <Tab>Guide</Tab> */}
+            <Tab>Profile</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <Stack spacing={6} align="center">  
-                <Heading mt={6} mb={6} textAlign="center" size="sm">Deal Details in Drop-Down Here</Heading>          
+                <Heading mt={6} mb={6} textAlign="center" size="sm">Click on each item to read a description and access member-only deals</Heading>          
+                <DealListAccordion handlePartnerClick={handlePartnerClick}/>
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <Stack spacing={6} align="center">  
                 <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
                 <PartnerList handlePartnerClick={handlePartnerClick}/>         
@@ -158,6 +162,12 @@ function useEffectAllDepsChange(fn, deps) {
             <TabPanel>
               <Stack spacing={6} align="center">  
                 <Heading mt={6} mb={6} textAlign="center" size="sm">Guide Goes Here</Heading>          
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>            
+            </TabPanel> */}
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <UserProfile userAddress={authdUser} userTier = {"placeholder"}/>          
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>            
             </TabPanel>

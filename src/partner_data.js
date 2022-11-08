@@ -2,49 +2,85 @@ export const PARTNER_DATA = [
   {
     COMPANY_ID: "0",
     COMPANY_NAME: "Global Fit Club",
+    DEAL_TYPE: "Discount",
+    DISCOUNT_PERCENTAGE: "20",
+    DISCOUNTED_ITEM: "Membership",
+    EXPIRATION: "25-12-2022",
+    IS_EXPIRED: false,
     CONTACT_TYPE: "0",
     TEMP_URL_REQUEST_ID: "0",
     EMAILJS_SERVICE_ID: "na",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "the real slim shady?"
   },
   {
     COMPANY_ID: "1",
     COMPANY_NAME: "F45",
+    DEAL_TYPE: "Discount",
+    DISCOUNT_PERCENTAGE: "12",
+    DISCOUNTED_ITEM: "Membership",
+    EXPIRATION: "23-2-2023",
+    IS_EXPIRED: false,
     CONTACT_TYPE: "1",
     TEMP_URL_REQUEST_ID: "na",
     EMAILJS_SERVICE_ID: "service_cj29t2l",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "the real slim shady?"
   },
   {
     COMPANY_ID: "2",
     COMPANY_NAME: "Global Fit Collective",
+    DEAL_TYPE: "Exclusive Offer",
+    DISCOUNT_PERCENTAGE: "0",
+    DISCOUNTED_ITEM: "Membership",
+    EXPIRATION: "3-2-2025",
+    IS_EXPIRED: false,
     CONTACT_TYPE: "0",
     TEMP_URL_REQUEST_ID: "0",
     EMAILJS_SERVICE_ID: "na",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "See why flattener doesnt work for latest contract added - make more robust"
   },
   {
     COMPANY_ID: "3",
     COMPANY_NAME: "Anytime Fitness",
+    DEAL_TYPE: "Discount",
+    DISCOUNT_PERCENTAGE: "20",
+    DISCOUNTED_ITEM: "Membership",
+    EXPIRATION: "3-2-2077",
+    IS_EXPIRED: false,
     CONTACT_TYPE: "1",
     TEMP_URL_REQUEST_ID: "na",
     EMAILJS_SERVICE_ID: "service_0vp6cgg",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "Write foundry tests, come up with template for foundry tests for mini hack-a-thon"
   },
   {
     COMPANY_ID: "4",
     COMPANY_NAME: "Neo Tokyo",
+    DEAL_TYPE: "Discount",
+    DISCOUNT_PERCENTAGE: "20",
+    DISCOUNTED_ITEM: "Membership",
     CONTACT_TYPE: "0",
+    EXPIRATION: "Never",
+    IS_EXPIRED: false,
     TEMP_URL_REQUEST_ID: "0",
     EMAILJS_SERVICE_ID: "na",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md"
   },
   {
     COMPANY_ID: "5",
     COMPANY_NAME: "Do Kwon's Gym",
+    DEAL_TYPE: "Discount",
+    DISCOUNT_PERCENTAGE: "20",
+    DISCOUNTED_ITEM: "Membership",
+    EXPIRATION: "Never",
+    IS_EXPIRED: true,
     CONTACT_TYPE: "1",
     TEMP_URL_REQUEST_ID: "na",
     EMAILJS_SERVICE_ID: "service_0vp6cgg",
-    IMAGE_PATH: "/android-chrome-192x192.png"
+    IMAGE_PATH: "/android-chrome-192x192.png",
+    DESCRIPTION: "Ensure checkout is streamlined, whether via paper, moonpay, or something like what reddit uses"
   },
 ]
