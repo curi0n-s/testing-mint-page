@@ -66,7 +66,7 @@ export const UserProfile = (props) => {
             <Heading size='lg'>User: {userAddress}</Heading>
 
             <HStack spacing={6} align="center">
-                <Image src={thisImage} maxW='300px' />
+                {/* <Image src={thisImage} maxW='300px' /> */}
                 <TokenBalanceAndClaimWidget userAddr={userAddress}/>
             </HStack>
 

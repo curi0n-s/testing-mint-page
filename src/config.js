@@ -4,7 +4,7 @@ export const EMAILJS_SENDER_PUBLIC_KEY = "RlkbKU4PBW5hI4Lbt";
 
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
 export const NFT_ADDRESS = "0xa6877252aEa1C3D5674F9fF22e2E6415fD7fE7f8";
-export const FT_ADDRESS = "0xb2c7405ce19de737697f5335EE9B043b3962F1EE";
+export const FT_ADDRESS = "0x233ffB982b517210044c3C3993766eC5912ABaB8";
 
 export const TEMPORARY_URL_REQUEST =
   "https://php-url-request.herokuapp.com/web/index.php";
@@ -190,9 +190,6 @@ export const NFT_ABI = [
 export const FT_ABI = [
   {
     inputs: [
-      { internalType: "address", name: "_chainlinkToken", type: "address" },
-      { internalType: "address", name: "_chainlinkOracle", type: "address" },
-      { internalType: "bytes32", name: "_jobId", type: "bytes32" },
       { internalType: "bool", name: "_taxIsOn", type: "bool" },
       { internalType: "uint256", name: "_defaultTaxRate", type: "uint256" },
       { internalType: "uint256", name: "_minTaxRate", type: "uint256" },
@@ -202,7 +199,9 @@ export const FT_ABI = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
+  { inputs: [], name: "ClaimAttemptForMoreThanBalance", type: "error" },
   { inputs: [], name: "ClaimSlotAlreadyUsed", type: "error" },
+  { inputs: [], name: "ClaimWillExceedMaxSupply", type: "error" },
   { inputs: [], name: "OnlyContractCanDispenseClaim", type: "error" },
   {
     anonymous: false,
@@ -253,6 +252,14 @@ export const FT_ABI = [
     name: "ChainlinkRequested",
     type: "event",
   },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+    ],
+    name: "ClaimSlotReopened",
+    type: "event",
+  },
   { anonymous: false, inputs: [], name: "HelloGFC", type: "event" },
   {
     anonymous: false,
@@ -296,13 +303,25 @@ export const FT_ABI = [
     inputs: [
       { indexed: true, internalType: "address", name: "user", type: "address" },
       {
+        indexed: true,
+        internalType: "address",
+        name: "taxdest",
+        type: "address",
+      },
+      {
         indexed: false,
         internalType: "uint256",
         name: "reward",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "taxpaid",
+        type: "uint256",
+      },
     ],
-    name: "RewardClaimed",
+    name: "RewardClaimedTaxPaid",
     type: "event",
   },
   {
@@ -565,6 +584,15 @@ export const FT_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "uint256", name: "_claimAmount", type: "uint256" },
+    ],
+    name: "claimTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "claimedRewards",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -607,6 +635,13 @@ export const FT_ABI = [
     name: "enableTax",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fee",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -678,15 +713,6 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "_claimAmount", type: "uint256" },
-    ],
-    name: "initiateClaim",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "maxSupply",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -725,15 +751,6 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "_claimAmount", type: "uint256" },
-    ],
-    name: "receiveClaim",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "address", name: "_oldexempt", type: "address" }],
     name: "removeExemptAddress",
     outputs: [],
@@ -761,15 +778,13 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "sendRequest",
-    outputs: [{ internalType: "bytes32", name: "requestId", type: "bytes32" }],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "string", name: "_URL", type: "string" }],
-    name: "setGetURL",
+    inputs: [
+      { internalType: "address", name: "_token", type: "address" },
+      { internalType: "address", name: "_oracle", type: "address" },
+      { internalType: "bytes32", name: "_jobid", type: "bytes32" },
+      { internalType: "string", name: "_geturl", type: "string" },
+    ],
+    name: "setChainlinkDetails",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -837,13 +852,6 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
-    name: "thisClaimAmount",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "string", name: "s", type: "string" }],
     name: "toAddress",
     outputs: [{ internalType: "address", name: "", type: "address" }],
@@ -900,6 +908,13 @@ export const FT_ABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "updateClaimableBalance",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "newtax", type: "uint256" }],
     name: "updateTax",
     outputs: [],
@@ -913,20 +928,6 @@ export const FT_ABI = [
     name: "updateTaxDestination",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "userAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "userBalanceAddition",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
     type: "function",
   },
   {
