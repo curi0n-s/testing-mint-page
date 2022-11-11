@@ -157,7 +157,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
                                 <SliderMark
                                 value={sliderValue}
                                 textAlign='center'
-                                color='white'
+                                // color='white'
                                 mt='-10'
                                 ml='-5'
                                 w='12'
