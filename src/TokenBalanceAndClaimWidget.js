@@ -126,81 +126,79 @@ export const TokenBalanceAndClaimWidget = (props) => {
 
     return(
         <Stack spacing={6} direction='column'>
-                
-                <Box p={5} shadow='md' borderWidth='1px'>
-                    <Stack spacing={6}>
-                        <Heading size='md'>
-                            Wallet Balance: {userBalance}
-                        </Heading>  
-                        <Box>
-                            <Iframe
-                                src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
-                                height="660px"
-                                width="500px"
-                                style={{
-                                    border: "10px", 
-                                    font: "14px",
-                            }}
+            <Box p={5} shadow='md' borderWidth='1px'>
+                <Stack spacing={6}>
+                    
+                    <Heading size='md'>
+                        Claimable Balance: {claimableBalance.toFixed(2)}
+                    </Heading>
+                    
+                    <Box pt={6} pb={2}>
+                        <Slider aria-label='slider-ex-6' defaultValue={100} onChange={(val) => setSliderValue(val)}>
+                            <SliderMark value={25} {...labelStyles}>
+                            25%
+                            </SliderMark>
+                            <SliderMark value={50} {...labelStyles}>
+                            50%
+                            </SliderMark>
+                            <SliderMark value={75} {...labelStyles}>
+                            75%
+                            </SliderMark>
+                            <SliderMark
+                            value={sliderValue}
+                            textAlign='center'
+                            // color='white'
+                            mt='-10'
+                            ml='-5'
+                            w='12'
+                            >
+                            {((sliderValue*claimableBalance)/100).toFixed(2)}
+                            </SliderMark>
+                            <SliderTrack>
+                            <SliderFilledTrack />
+                            </SliderTrack>
+                            <SliderThumb />
+                        </Slider>
+                    </Box>
+                    <Heading size='sm'>% of Balance to Claim</Heading>
 
-                            />
-                        </Box> 
-                        {/* <Button>Trade on Uniswap</Button>
-                        <Button>Trade on SushiSwap</Button>
-                        <Button>View on Etherscan</Button>
-                        <Button>GFC Marketplace</Button> */}
-                    </Stack>
-                </Box>
-                
-                <Box p={5} shadow='md' borderWidth='1px'>
-                    <Stack spacing={6}>
+
+                    <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Processing Claim...' onClick={handleChange}>
+                        Transfer Claimable Balance to Wallet
+                    </Button> 
+
+                    <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Updating Claimable Balance...' onClick={() => writeUpdate({
+                        recklesslySetUnpreparedOverrides: {
+                            from: props.userAddr,
+                        }
+                    })}>Update Claimable Balance (~10 min)</Button> 
                         
-                        <Heading size='md'>
-                            Claimable Balance: {claimableBalance}
-                        </Heading>
-                        
-                        <Box pt={6} pb={2}>
-                            <Slider aria-label='slider-ex-6' defaultValue={100} onChange={(val) => setSliderValue(val)}>
-                                <SliderMark value={25} {...labelStyles}>
-                                25%
-                                </SliderMark>
-                                <SliderMark value={50} {...labelStyles}>
-                                50%
-                                </SliderMark>
-                                <SliderMark value={75} {...labelStyles}>
-                                75%
-                                </SliderMark>
-                                <SliderMark
-                                value={sliderValue}
-                                textAlign='center'
-                                // color='white'
-                                mt='-10'
-                                ml='-5'
-                                w='12'
-                                >
-                                {(sliderValue*claimableBalance)/100}
-                                </SliderMark>
-                                <SliderTrack>
-                                <SliderFilledTrack />
-                                </SliderTrack>
-                                <SliderThumb />
-                            </Slider>
-                        </Box>
-                        <Heading size='sm'>% of Balance to Claim</Heading>
 
+                </Stack>
+            </Box>  
+            <Box p={5} shadow='md' borderWidth='1px'>
+                <Stack spacing={6}>
+                    <Heading size='md'>
+                        Wallet Balance: {userBalance.toFixed(2)}
+                    </Heading>  
+                    <Box>
+                        <Iframe
+                            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
+                            height="660px"
+                            width="500px"
+                            style={{
+                                border: "10px", 
+                                font: "14px",
+                        }}
 
-                        <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Processing Claim...' onClick={handleChange}>
-                            Transfer Claimable Balance to Wallet
-                        </Button> 
-
-                        <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Updating Claimable Balance...' onClick={() => writeUpdate({
-                            recklesslySetUnpreparedOverrides: {
-                                from: props.userAddr,
-                            }
-                        })}>Update Claimable Balance (~10 min)</Button> 
-                            
-
-                    </Stack>
-                </Box>        
+                        />
+                    </Box> 
+                    {/* <Button>Trade on Uniswap</Button>
+                    <Button>Trade on SushiSwap</Button>
+                    <Button>View on Etherscan</Button>
+                    <Button>GFC Marketplace</Button> */}
+                </Stack>
+            </Box>      
         </Stack>
     )
 
