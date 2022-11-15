@@ -138,12 +138,18 @@ function useEffectAllDepsChange(fn, deps) {
             </a>          
             <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
           <TabList>
-            <Tab>Deals</Tab>
+            <Tab>Profile</Tab>
             {/* <Tab>Links</Tab>
             <Tab>Guide</Tab> */}
-            <Tab>Profile</Tab>
+            <Tab>Deals</Tab>
           </TabList>
           <TabPanels>
+            <TabPanel>
+              <Stack spacing={6} align="center">  
+                <UserProfile userAddress={authdUser} userTier = {"placeholder"}/>          
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>            
+            </TabPanel>
             <TabPanel>
               <Stack spacing={4} align="center">  
                 <Heading mt={1} mb={1} textAlign="center" size="sm">{`Click on each item to read a description and access member-only deals.`}</Heading>          
@@ -166,12 +172,6 @@ function useEffectAllDepsChange(fn, deps) {
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>            
             </TabPanel> */}
-            <TabPanel>
-              <Stack spacing={6} align="center">  
-                <UserProfile userAddress={authdUser} userTier = {"placeholder"}/>          
-                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
-              </Stack>            
-            </TabPanel>
 
           </TabPanels>
 

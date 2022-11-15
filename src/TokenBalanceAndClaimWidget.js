@@ -125,7 +125,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
 
 
     return(
-        <Stack spacing={6} direction='column'>
+        <Stack spacing={6} direction='row'>
             <Box p={5} shadow='md' borderWidth='1px'>
                 <Stack spacing={6}>
                     
