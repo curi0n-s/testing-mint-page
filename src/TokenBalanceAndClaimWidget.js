@@ -11,6 +11,9 @@ import { useEffect, useState } from 'react';
 import { FT_ABI, FT_ADDRESS } from "./config"
 import { ethers } from 'ethers';
 import Iframe from 'react-iframe'
+import './iframe.css';
+import { SwapWidget, darkTheme } from '@uniswap/widgets/dist/index.js'
+import '@uniswap/widgets/dist/fonts.css'
 
 
 export const TokenBalanceAndClaimWidget = (props) => {
@@ -122,85 +125,98 @@ export const TokenBalanceAndClaimWidget = (props) => {
 
     const disabledConds = !writeUpdate || updateIsLoading || waitUpdateIsLoading || updateIsFetching || !writeClaim || claimIsLoading || waitClaimIsLoading || claimIsFetching
     const isLoadingConds = updateIsLoading||waitUpdateIsLoading||updateIsFetching || claimIsLoading||waitClaimIsLoading||claimIsFetching
-
+    const UNISWAP_TOKEN_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
 
     return(
-        <Stack spacing={6} direction='column'>
-                
-                <Box p={5} shadow='md' borderWidth='1px'>
-                    <Stack spacing={6}>
-                        <Heading size='md'>
-                            Wallet Balance: {userBalance}
-                        </Heading>  
-                        <Box>
-                            <Iframe
-                                src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
-                                height="660px"
-                                width="500px"
-                                style={{
-                                    border: "10px", 
-                                    font: "14px",
-                            }}
+        <Stack spacing={6} direction='row'>
+            <Box p={5} shadow='md' borderWidth='1px'>
+                <Stack spacing={6}>
+                    
+                    <Heading size='md'>
+                        Claimable Balance: {claimableBalance.toFixed(2)}
+                    </Heading>
+                    
+                    <Box pt={6} pb={2}>
+                        <Slider aria-label='slider-ex-6' defaultValue={100} onChange={(val) => setSliderValue(val)}>
+                            <SliderMark value={25} {...labelStyles}>
+                            25%
+                            </SliderMark>
+                            <SliderMark value={50} {...labelStyles}>
+                            50%
+                            </SliderMark>
+                            <SliderMark value={75} {...labelStyles}>
+                            75%
+                            </SliderMark>
+                            <SliderMark
+                            value={sliderValue}
+                            textAlign='center'
+                            // color='white'
+                            mt='-10'
+                            ml='-5'
+                            w='12'
+                            >
+                            {((sliderValue*claimableBalance)/100).toFixed(2)}
+                            </SliderMark>
+                            <SliderTrack>
+                            <SliderFilledTrack />
+                            </SliderTrack>
+                            <SliderThumb />
+                        </Slider>
+                    </Box>
+                    <Heading size='sm'>% of Balance to Claim</Heading>
 
-                            />
-                        </Box> 
-                        {/* <Button>Trade on Uniswap</Button>
-                        <Button>Trade on SushiSwap</Button>
-                        <Button>View on Etherscan</Button>
-                        <Button>GFC Marketplace</Button> */}
-                    </Stack>
-                </Box>
-                
-                <Box p={5} shadow='md' borderWidth='1px'>
-                    <Stack spacing={6}>
+
+                    <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Processing Claim...' onClick={handleChange}>
+                        Transfer Selected Balance to Wallet
+                    </Button> 
+
+                    <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Updating Claimable Balance...' onClick={() => writeUpdate({
+                        recklesslySetUnpreparedOverrides: {
+                            from: props.userAddr,
+                        }
+                    })}>Update Claimable Balance (~10 min)</Button> 
                         
-                        <Heading size='md'>
-                            Claimable Balance: {claimableBalance}
-                        </Heading>
-                        
-                        <Box pt={6} pb={2}>
-                            <Slider aria-label='slider-ex-6' defaultValue={100} onChange={(val) => setSliderValue(val)}>
-                                <SliderMark value={25} {...labelStyles}>
-                                25%
-                                </SliderMark>
-                                <SliderMark value={50} {...labelStyles}>
-                                50%
-                                </SliderMark>
-                                <SliderMark value={75} {...labelStyles}>
-                                75%
-                                </SliderMark>
-                                <SliderMark
-                                value={sliderValue}
-                                textAlign='center'
-                                // color='white'
-                                mt='-10'
-                                ml='-5'
-                                w='12'
-                                >
-                                {(sliderValue*claimableBalance)/100}
-                                </SliderMark>
-                                <SliderTrack>
-                                <SliderFilledTrack />
-                                </SliderTrack>
-                                <SliderThumb />
-                            </Slider>
-                        </Box>
-                        <Heading size='sm'>% of Balance to Claim</Heading>
 
+                </Stack>
+            </Box> 
 
-                        <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Processing Claim...' onClick={handleChange}>
-                            Transfer Claimable Balance to Wallet
-                        </Button> 
+            <Box p={5} shadow='md' borderWidth='1px'>
+                <Stack spacing={6}>
+                    <Heading size='md'>
+                        Wallet Balance: {userBalance.toFixed(2)}
+                    </Heading>  
+                    <Box>
+                        <SwapWidget
+                            theme={darkTheme}
+                            tokenList={UNISWAP_TOKEN_LIST}
+                            defaultInputTokenAddress={'NATIVE'}
+                            defaultInputAmount={0.08}
+                            defaultOutputTokenAddress={FT_ADDRESS}
+                        />
+                        <Iframe
+                            class="scaled-frame"
+                            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
+                            height="660px"
+                            width="500px"
+                            border="10px"
+                            style="
+                            border: 0;
+                            margin: 0 auto;
+                            margin-bottom: .5rem;
+                            display: block;
+                            border-radius: 10px;
+                            max-width: 960px;
+                            min-width: 300px;
+                            "
 
-                        <Button disabled={disabledConds} isLoading={isLoadingConds} loadingText='Updating Claimable Balance...' onClick={() => writeUpdate({
-                            recklesslySetUnpreparedOverrides: {
-                                from: props.userAddr,
-                            }
-                        })}>Update Claimable Balance (~10 min)</Button> 
-                            
-
-                    </Stack>
-                </Box>        
+                        />
+                    </Box> 
+                    {/* <Button>Trade on Uniswap</Button>
+                    <Button>Trade on SushiSwap</Button>
+                    <Button>View on Etherscan</Button>
+                    <Button>GFC Marketplace</Button> */}
+                </Stack>
+            </Box>       
         </Stack>
     )
 

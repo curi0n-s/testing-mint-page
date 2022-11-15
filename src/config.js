@@ -186,7 +186,7 @@ export const NFT_ABI = [
   },
 ];
 
-//0xb2c7405ce19de737697f5335EE9B043b3962F1EE
+//0xcCe44eA800266AA0562eA54da087c7b90a31eCB1
 export const FT_ABI = [
   {
     inputs: [

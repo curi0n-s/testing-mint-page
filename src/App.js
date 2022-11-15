@@ -138,20 +138,12 @@ function useEffectAllDepsChange(fn, deps) {
             </a>          
             <Heading mt={6} mb={6} textAlign="center" size="xl">Member Dashboard</Heading>
           <TabList>
+            <Tab>Profile</Tab>
             <Tab>Deals</Tab>
             {/* <Tab>Links</Tab>
             <Tab>Guide</Tab> */}
-            <Tab>Profile</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <Stack spacing={4} align="center">  
-                <Heading mt={1} mb={1} textAlign="center" size="sm">{`Click on each item to read a description and access member-only deals.`}</Heading>          
-                <Heading mt={1} mb={1} textAlign="center" size="sm">{`For E-mail forms, refer to the project deal description for the necessary information to include.`}</Heading>                          
-                <DealListAccordion handlePartnerClick={handlePartnerClick}/>
-                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
-              </Stack>
-            </TabPanel>
             {/* <TabPanel>
               <Stack spacing={6} align="center">  
                 <Heading mt={6} mb={6} textAlign="center" size="sm">Access Holder-only Deals for these Partners:</Heading>          
@@ -171,6 +163,14 @@ function useEffectAllDepsChange(fn, deps) {
                 <UserProfile userAddress={authdUser} userTier = {"placeholder"}/>          
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>            
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={4} align="center">  
+                <Heading mt={1} mb={1} textAlign="center" size="sm">{`Click on each item to read a description and access member-only deals.`}</Heading>          
+                <Heading mt={1} mb={1} textAlign="center" size="sm">{`For E-mail forms, refer to the project deal description for the necessary information to include.`}</Heading>                          
+                <DealListAccordion handlePartnerClick={handlePartnerClick}/>
+                <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+              </Stack>
             </TabPanel>
 
           </TabPanels>
