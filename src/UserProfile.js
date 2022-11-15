@@ -1,4 +1,4 @@
-import { Heading, Button, Stack, HStack, Alert, Spinner, Image,Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer, } from '@chakra-ui/react'
+import { Box, Heading, Button, Stack, HStack, Alert, Spinner, Image,Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer, } from '@chakra-ui/react'
 import { lazy } from 'react';
 import { TokenBalanceAndClaimWidget } from './TokenBalanceAndClaimWidget'
 
@@ -62,44 +62,51 @@ export const UserProfile = (props) => {
 
         return(
         <Stack spacing={6} align="center">             
-        
-            <Heading size='lg'>User: {userAddress}</Heading>
+        {/* 'bgGradient='linear(to-r, gray.300, gray.700, gray.300)' */}
+            <Box p={4} borderWidth='0px'><Heading size='lg'>User: {userAddress}</Heading></Box>
 
             <HStack spacing={6} align="center">
                 {/* <Image src={thisImage} maxW='300px' /> */}
                 <TokenBalanceAndClaimWidget userAddr={userAddress}/>
             </HStack>
 
-            <HStack spacing={6} align="center">
-                <TableContainer>
-                    <Table size='sm'>
-                        <Thead>
-                            <Tr>
-                                <Td>{userPartnerActivityFields[0]}</Td>
-                                <Td>{userPartnerActivityFields[1]}</Td>
-                                <Td>{userPartnerActivityFields[2]}</Td>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                        {tablePartnerContentsArray} 
-                        </Tbody>
-                    </Table>
-                </TableContainer>
-                <TableContainer>
-                    <Table size='sm'>
-                        <Thead>
-                            <Tr>
-                                <Td>{userClaimActivityFields[0]}</Td>
-                                <Td>{userClaimActivityFields[1]}</Td>
-                                <Td>{userClaimActivityFields[2]}</Td>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                        {tableClaimContentsArray} 
-                        </Tbody>
-                    </Table>
-                </TableContainer>
-            </HStack>
+            
+                <HStack spacing={6} align="center">
+                    <Box borderWidth='1px'>
+                        <Heading size='md' p={4}>Partner Transactions</Heading>
+                        <TableContainer>
+                            <Table size='sm'>
+                                <Thead>
+                                    <Tr>
+                                        <Td>{userPartnerActivityFields[0]}</Td>
+                                        <Td>{userPartnerActivityFields[1]}</Td>
+                                        <Td>{userPartnerActivityFields[2]}</Td>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                {tablePartnerContentsArray} 
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                    <Box borderWidth="1px">
+                        <Heading size='md' p={4}>Token Transactions</Heading>
+                        <TableContainer>
+                            <Table size='sm'>
+                                <Thead>
+                                    <Tr>
+                                        <Td>{userClaimActivityFields[0]}</Td>
+                                        <Td>{userClaimActivityFields[1]}</Td>
+                                        <Td>{userClaimActivityFields[2]}</Td>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                {tableClaimContentsArray} 
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </HStack>
         </Stack>
         )
 }

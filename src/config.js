@@ -4,7 +4,7 @@ export const EMAILJS_SENDER_PUBLIC_KEY = "RlkbKU4PBW5hI4Lbt";
 
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
 export const NFT_ADDRESS = "0xa6877252aEa1C3D5674F9fF22e2E6415fD7fE7f8";
-export const FT_ADDRESS = "0x233ffB982b517210044c3C3993766eC5912ABaB8";
+export const FT_ADDRESS = "0xcCe44eA800266AA0562eA54da087c7b90a31eCB1";
 
 export const TEMPORARY_URL_REQUEST =
   "https://php-url-request.herokuapp.com/web/index.php";

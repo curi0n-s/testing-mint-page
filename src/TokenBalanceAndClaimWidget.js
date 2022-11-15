@@ -10,6 +10,8 @@ import {useContractReads, useContractWrite, usePrepareContractWrite, useWaitForT
 import { useEffect, useState } from 'react';
 import { FT_ABI, FT_ADDRESS } from "./config"
 import { ethers } from 'ethers';
+import Iframe from 'react-iframe'
+
 
 export const TokenBalanceAndClaimWidget = (props) => {
     
@@ -123,16 +125,29 @@ export const TokenBalanceAndClaimWidget = (props) => {
 
 
     return(
-        <Stack spacing={6} direction='row'>
+        <Stack spacing={6} direction='column'>
+                
                 <Box p={5} shadow='md' borderWidth='1px'>
                     <Stack spacing={6}>
                         <Heading size='md'>
                             Wallet Balance: {userBalance}
-                        </Heading>   
-                        <Button>Trade on Uniswap</Button>
+                        </Heading>  
+                        <Box>
+                            <Iframe
+                                src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
+                                height="660px"
+                                width="500px"
+                                style={{
+                                    border: "10px", 
+                                    font: "14px",
+                            }}
+
+                            />
+                        </Box> 
+                        {/* <Button>Trade on Uniswap</Button>
                         <Button>Trade on SushiSwap</Button>
                         <Button>View on Etherscan</Button>
-                        <Button>GFC Marketplace</Button>
+                        <Button>GFC Marketplace</Button> */}
                     </Stack>
                 </Box>
                 
