@@ -126,7 +126,9 @@ export const TokenBalanceAndClaimWidget = (props) => {
     const disabledConds = !writeUpdate || updateIsLoading || waitUpdateIsLoading || updateIsFetching || !writeClaim || claimIsLoading || waitClaimIsLoading || claimIsFetching
     const isLoadingConds = updateIsLoading||waitUpdateIsLoading||updateIsFetching || claimIsLoading||waitClaimIsLoading||claimIsFetching
     const UNISWAP_TOKEN_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
-
+    const jsonRpcUrlMap = { 
+        5: ['https://goerli.infura.io/v3/f45ec1b38a7941229ee4ee8a49bf4e1c']
+    }
     return(
         <Stack spacing={6} direction='row'>
             <Box p={5} shadow='md' borderWidth='1px'>
@@ -188,10 +190,12 @@ export const TokenBalanceAndClaimWidget = (props) => {
                     <Box>
                         <SwapWidget
                             theme={darkTheme}
+                            jsonRpcUrlMap={jsonRpcUrlMap}
+                            // provider={ethers}
                             tokenList={UNISWAP_TOKEN_LIST}
                             defaultInputTokenAddress={'NATIVE'}
                             defaultInputAmount={0.08}
-                            defaultOutputTokenAddress={FT_ADDRESS}
+                            defaultOutputTokenAddress={'0xcCe44eA800266AA0562eA54da087c7b90a31eCB1'}
                         />
                         <Iframe
                             class="scaled-frame"
