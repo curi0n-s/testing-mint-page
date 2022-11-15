@@ -12,8 +12,8 @@ import { FT_ABI, FT_ADDRESS } from "./config"
 import { ethers } from 'ethers';
 import Iframe from 'react-iframe'
 import './iframe.css';
-import { SwapWidget, darkTheme } from '@uniswap/widgets/dist/index.js'
-import '@uniswap/widgets/dist/fonts.css'
+// import { SwapWidget, darkTheme } from '@uniswap/widgets/dist/index.js'
+// import '@uniswap/widgets/dist/fonts.css'
 
 
 export const TokenBalanceAndClaimWidget = (props) => {
@@ -188,7 +188,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
                         Wallet Balance: {userBalance.toFixed(2)}
                     </Heading>  
                     <Box>
-                        <SwapWidget
+                        {/* <SwapWidget
                             theme={darkTheme}
                             jsonRpcUrlMap={jsonRpcUrlMap}
                             // provider={ethers}
@@ -196,7 +196,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
                             defaultInputTokenAddress={'NATIVE'}
                             defaultInputAmount={0.08}
                             defaultOutputTokenAddress={'0xcCe44eA800266AA0562eA54da087c7b90a31eCB1'}
-                        />
+                        /> */}
                         <Iframe
                             class="scaled-frame"
                             src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
