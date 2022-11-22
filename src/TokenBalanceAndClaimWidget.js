@@ -122,7 +122,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
 
     const disabledConds = !writeUpdate || updateIsLoading || waitUpdateIsLoading || updateIsFetching || !writeClaim || claimIsLoading || waitClaimIsLoading || claimIsFetching
     const isLoadingConds = updateIsLoading||waitUpdateIsLoading||updateIsFetching || claimIsLoading||waitClaimIsLoading||claimIsFetching
-
+    const defaultSliderValue = 100;
 
     return(
         <Stack spacing={6} direction='row'>
@@ -134,7 +134,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
                     </Heading>
                     
                     <Box pt={6} pb={2}>
-                        <Slider aria-label='slider-ex-6' defaultValue={100} onChange={(val) => setSliderValue(val)}>
+                        <Slider aria-label='slider-ex-6' defaultValue={defaultSliderValue} onChange={(val) => setSliderValue(val)}>
                             <SliderMark value={25} {...labelStyles}>
                             25%
                             </SliderMark>
@@ -171,7 +171,7 @@ export const TokenBalanceAndClaimWidget = (props) => {
                         recklesslySetUnpreparedOverrides: {
                             from: props.userAddr,
                         }
-                    })}>Update Claimable Balance (~10 min)</Button> 
+                    })}>Update Claimable Balance (~3 min)</Button> 
                         
 
                 </Stack>
@@ -183,7 +183,8 @@ export const TokenBalanceAndClaimWidget = (props) => {
                     </Heading>  
                     <Box>
                         <Iframe
-                            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=0xcCe44eA800266AA0562eA54da087c7b90a31eCB1"
+                            id="uniswap"
+                            src={`https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.08&inputCurrency=ETH&outputCurrency=${FT_ADDRESS}`}
                             height="660px"
                             width="500px"
                             style={{

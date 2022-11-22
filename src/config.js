@@ -4,7 +4,7 @@ export const EMAILJS_SENDER_PUBLIC_KEY = "RlkbKU4PBW5hI4Lbt";
 
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
 export const NFT_ADDRESS = "0xa6877252aEa1C3D5674F9fF22e2E6415fD7fE7f8";
-export const FT_ADDRESS = "0xcCe44eA800266AA0562eA54da087c7b90a31eCB1";
+export const FT_ADDRESS = "0xBa32d4C580590E446447C8C6E32aBB37b2CAE916";
 
 export const TEMPORARY_URL_REQUEST =
   "https://php-url-request.herokuapp.com/web/index.php";
@@ -186,14 +186,11 @@ export const NFT_ABI = [
   },
 ];
 
-//0xb2c7405ce19de737697f5335EE9B043b3962F1EE
+//0xBa32d4C580590E446447C8C6E32aBB37b2CAE916
 export const FT_ABI = [
   {
     inputs: [
-      { internalType: "bool", name: "_taxIsOn", type: "bool" },
       { internalType: "uint256", name: "_defaultTaxRate", type: "uint256" },
-      { internalType: "uint256", name: "_minTaxRate", type: "uint256" },
-      { internalType: "uint256", name: "_maxTaxRate", type: "uint256" },
       { internalType: "address", name: "_treasuryAddr", type: "address" },
     ],
     stateMutability: "nonpayable",
@@ -387,66 +384,6 @@ export const FT_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: "uint256", name: "id", type: "uint256" },
-    ],
-    name: "Snapshot",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "TaxChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "TaxDestinationChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "TaxOff",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "TaxOn",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
       { indexed: true, internalType: "address", name: "user", type: "address" },
       {
         indexed: false,
@@ -550,16 +487,6 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "account", type: "address" },
-      { internalType: "uint256", name: "snapshotId", type: "uint256" },
-    ],
-    name: "balanceOfAt",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     name: "burn",
     outputs: [],
@@ -624,17 +551,10 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "disableTax",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "enableTax",
-    outputs: [],
-    stateMutability: "nonpayable",
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "eoaRegistryStatus",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -665,6 +585,20 @@ export const FT_ABI = [
     inputs: [{ internalType: "bytes32", name: "role", type: "bytes32" }],
     name: "getRoleAdmin",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTaxRate",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTreasuryAddress",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
@@ -713,6 +647,15 @@ export const FT_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "address", name: "_userAddress", type: "address" },
+    ],
+    name: "isRegisteredEoa",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "maxSupply",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -748,6 +691,13 @@ export const FT_ABI = [
     name: "owner",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "registerEoa",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -790,8 +740,17 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "snapshot",
+    inputs: [{ internalType: "uint256", name: "newRate", type: "uint256" }],
+    name: "setTaxRate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_newTreasuryAddress", type: "address" },
+    ],
+    name: "setTreasuryAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -832,21 +791,7 @@ export const FT_ABI = [
   },
   {
     inputs: [],
-    name: "taxdestination",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "taxed",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "thetax",
+    name: "taxRate",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -873,15 +818,8 @@ export const FT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "snapshotId", type: "uint256" }],
-    name: "totalSupplyAt",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
-      { internalType: "address", name: "to", type: "address" },
+      { internalType: "address", name: "recipient", type: "address" },
       { internalType: "uint256", name: "amount", type: "uint256" },
     ],
     name: "transfer",
@@ -891,8 +829,8 @@ export const FT_ABI = [
   },
   {
     inputs: [
-      { internalType: "address", name: "from", type: "address" },
-      { internalType: "address", name: "to", type: "address" },
+      { internalType: "address", name: "sender", type: "address" },
+      { internalType: "address", name: "recipient", type: "address" },
       { internalType: "uint256", name: "amount", type: "uint256" },
     ],
     name: "transferFrom",
@@ -909,23 +847,14 @@ export const FT_ABI = [
   },
   {
     inputs: [],
+    name: "treasuryAddress",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "updateClaimableBalance",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "newtax", type: "uint256" }],
-    name: "updateTax",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "_newTreasury", type: "address" },
-    ],
-    name: "updateTaxDestination",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -8,7 +8,7 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Text } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Text, useColorMode } from '@chakra-ui/react'
 
 //locals
 import { TEMPORARY_URL_REQUEST } from "./config"
@@ -37,6 +37,9 @@ function App() {
 
   const [linkButtonIsClicked, setLinkButtonIsClicked] = useState(false);
   const [emailButtonIsClicked, setEmailButtonIsClicked] = useState(false); 
+
+  const { colorMode, toggleColorMode } = useColorMode()
+
   
   useAccount({
     onDisconnect(){
@@ -148,6 +151,11 @@ function useEffectAllDepsChange(fn, deps) {
               <Stack spacing={6} align="center">  
                 <UserProfile userAddress={authdUser} userTier = {"placeholder"}/>          
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+                <footer>
+                  <Button onClick={toggleColorMode}>
+                    Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+                  </Button>
+                </footer>
               </Stack>            
             </TabPanel>
             <TabPanel>
@@ -156,6 +164,11 @@ function useEffectAllDepsChange(fn, deps) {
                 <Heading mt={1} mb={1} textAlign="center" size="sm">{`For E-mail forms, refer to the project deal description for the necessary information to include.`}</Heading>                          
                 <DealListAccordion handlePartnerClick={handlePartnerClick}/>
                 <Button colorScheme="blue" onClick={() => disconnect()}>Disconnect</Button>
+                <footer>
+                  <Button onClick={toggleColorMode}>
+                    Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+                  </Button>
+                </footer>
               </Stack>
             </TabPanel>
             {/* <TabPanel>
@@ -183,6 +196,7 @@ function useEffectAllDepsChange(fn, deps) {
 
   return (
     <Stack spacing={6} align="center"> 
+     
       <a href="#" id="logo" onclick="document.location.href;return false;" >
         <img src={logo} alt="logo" height="70" width="70" />
       </a>      
@@ -198,9 +212,13 @@ function useEffectAllDepsChange(fn, deps) {
           <Model />
         </Canvas>
       </Wrapper>
-      <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Link Here</Heading>          
+      <footer>
+        <Button onClick={toggleColorMode}>
+          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+        </Button>
+      </footer>
+    <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Link Here</Heading>          
 
-    
     </Stack>
   );
 }

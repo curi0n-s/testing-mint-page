@@ -17,6 +17,8 @@ const { chains, provider } = configureChains(
 const theme = extendTheme({
   config: {
     initialColorMode: 'dark',
+    useSystemColorMode: false,
+
   }
 })
 
