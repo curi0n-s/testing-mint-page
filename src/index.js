@@ -8,19 +8,26 @@ import { getDefaultProvider } from 'ethers'
 import { chain, configureChains } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { INFURA_API_KEY } from "./config"
+import "@fontsource/fira-code"
 
 const { chains, provider } = configureChains(
-  [chain.goerli, chain.polygon],
+  [chain.goerli, chain.mainnet],
   [infuraProvider({ apiKey: INFURA_API_KEY })],
 )
 
 const theme = extendTheme({
-  config: {
-    initialColorMode: 'dark',
-    useSystemColorMode: false,
-
-  }
-})
+  styles: {
+    global: () => ({
+      body: {
+        bg: "rgb(3, 3, 3)",
+      },
+    }),
+  },
+  fonts: {
+    heading: `'Fira Code'`,
+    body: `'Fira Code'`,
+  },
+});
 
 const client = createClient({
   autoConnect: true,
