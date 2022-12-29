@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ascii-art": "^2.8.5",
     "axios": "1.1.2",
+    "bignumber.js": "^9.1.1",
     "cors": "^2.8.5",
     "emailjs": "^4.0.0",
     "ethers": "^5.7.1",

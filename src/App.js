@@ -33,11 +33,16 @@ import {
   CardBody,
   CardFooter,
   Spinner,
-  Image
+  Image,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react'
 
 //locals
-import logo from './pendings.png'
+import logo from './pendings3.png'
 import { NFT_ADDRESS, NFT_ABI, NFT_CHAINID } from './config.js'
 
 
@@ -46,10 +51,16 @@ function App() {
   let [amountMinted, setAmountMinted] = useState(0);
   let [mintSuccess, setMintSuccess] = useState(false);
   let [isMinting, setIsMinting] = useState(false);
+  let [mintQuantity, setMintQuantity] = useState(1);
+  let [mintPriceInWei, setMintPriceInWei] = useState("25000000000000000");
+  let [mintPriceInEther, setMintPriceInEther] = useState("0.025");
+  let [displayEthPrice, setDisplayEthPrice] = useState(0.025);
+
   const buttonBg = useColorModeValue("rgb(255, 255, 255)","rgb(255, 255, 255)")
   const buttonText = useColorModeValue("rgb(3, 3, 3)","rgb(3, 3, 3)")
 
   const { colorMode, toggleColorMode } = useColorMode()
+
   useEffect(() => {
     if(colorMode === "light"){
       toggleColorMode()
@@ -66,7 +77,7 @@ function App() {
 
   const handleInitiateClaim = (e) => {
       console.log("handleInitiateClaim entered")
-      e.preventDefault();
+      // e.preventDefault();
       if(chain.chainId !== NFT_CHAINID){
           switchNetwork(NFT_CHAINID)
       }
@@ -74,14 +85,20 @@ function App() {
       writeClaim({
           recklesslySetUnpreparedOverrides: {
               from: address,
+              value: mintPriceInWei,
           }            
       })    
   }
 
+  const handleMintQuantityChange = (value) => {
+      setMintQuantity(value);
+      setDisplayEthPrice((value * mintPriceInEther).toFixed(3));
+  }
 
   const { data: claimData, error: claimError, isError: claimIsError, isIdle: claimIsIdle, write: writeClaim, isLoading: claimIsLoading } = useContractWrite({
       mode: 'recklesslyUnprepared', //lol yes i am
-      functionName: 'mint',     
+      functionName: 'mintPending',   
+      args: [mintQuantity],  
       address: NFT_ADDRESS,
       abi: NFT_ABI,
       enabled: false, 
@@ -101,8 +118,14 @@ function App() {
         {
             address: NFT_ADDRESS,
             abi: NFT_ABI,
-            functionName: 'getAmountMinted',
-            args: [address],
+            functionName: 'totalMintedSoFar',
+            args: [],
+        },
+        {
+          address: NFT_ADDRESS,
+          abi: NFT_ABI,
+          functionName: 'publicMintCost',
+          args: [],
         },
     ],
     watch: true,
@@ -110,8 +133,13 @@ function App() {
     cacheTime: 2_000,
     enabled: true,
     onSuccess(data){
-        console.log(`message`)
-        setAmountMinted(parseInt(data[0]._hex,16));        
+        setAmountMinted(parseInt(data[0]._hex,16));     
+        let data1 = parseInt(data[1]._hex,16);
+        setMintPriceInWei(data1.toString());
+        setMintPriceInEther(ethers.utils.formatEther ((parseInt(data[1]._hex,16)).toString())); 
+        setDisplayEthPrice((mintQuantity * ethers.utils.formatEther ((parseInt(data[1]._hex,16)).toString())).toFixed(4));
+        console.log(`mintprice in wei: ${mintPriceInWei}`)       
+        console.log(`mintprice in ether: ${mintPriceInEther}`)       
     },
     onError(data){
         console.log(`message`)
@@ -142,30 +170,31 @@ function App() {
           >
           <CardBody>
             <Stack mt={"20px"} align='center'>
-            <Image 
-              maxW={{ base: '100%', sm: '300px' }}
-              align={"center"} 
-              src={"https://media3.giphy.com/media/tA4R6biK5nlBVXeR7w/giphy.gif?cid=790b76116355b815c67362ecb970a6e3ece310cd16f384ae&rid=giphy.gif&ct=g"}
-              borderRadius="20px"
-            />
+              <Image 
+                maxW={{ base: '100%', sm: '300px' }}
+                align={"center"} 
+                src={"https://media3.giphy.com/media/tA4R6biK5nlBVXeR7w/giphy.gif?cid=790b76116355b815c67362ecb970a6e3ece310cd16f384ae&rid=giphy.gif&ct=g"}
+                borderRadius="20px"
+              />
             
               <Text align={"center"} fontSize="lg" fontWeight="bold">It all started with a pending transaction.</Text>
               <Text align={"center"} fontSize="lg" fontWeight="bold">A force of energy that began our journey from an idea to an empire.</Text>
               <Text align={"center"} fontSize="lg" fontWeight="bold">Energy moves from one peer to another.</Text>
               <Text align={"center"} fontSize="lg" fontWeight="bold">Degenerates dance around the endless spiral of greed and fear.</Text>
               <Box >   
-                <Text align={"center"} mt={"20px"} fontSize="lg" fontWeight="bold">Mint Price: 0.02 ETH</Text>           
-                <Text align={"center"} mt={"10px"} mb={"20px"} fontSize="lg" fontWeight="bold">Amount Minted: {amountMinted}</Text>
+                <Text align={"center"} mt={"20px"} fontSize="lg" fontWeight="bold">Mint Price: {mintPriceInEther} ETH</Text>           
+                <Text align={"center"} mt={"10px"} mb={"20px"} fontSize="lg" fontWeight="bold">Amount Minted: {amountMinted} / 999</Text>
               </Box>
               {!isConnected ?
 
                 connectors.map((connector) => (
                     <Button
-                      width={133}
+                      width={300}
                       disabled={false}
                       key={connector.id}
                       onClick={() => connect({ connector })}
                       bgColor={buttonBg}
+                      textColor={buttonText}
                     >
                       Connect
                     </Button>
@@ -173,14 +202,14 @@ function App() {
 
                   connectors.map((connector) => (
                     <Button
-                      width={133}
+                      width={300}
                       disabled={!connector.ready}
                       key={connector.id}
-                      onClick={() => handleInitiateClaim()}
+                      onClick={handleInitiateClaim}
                       bgColor={buttonBg}
                       textColor={buttonText}
                     >
-                      { mintSuccess ? (isMinting ? <Spinner /> : "Success!") : "Mint" }
+                      { mintSuccess ? (isMinting ? <Spinner /> : "Success!") : `Mint ${mintQuantity} for ${mintPriceInEther} ETH` }
                     </Button>
                   ))
                 
