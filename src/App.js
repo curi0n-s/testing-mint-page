@@ -154,8 +154,7 @@ function App() {
   return (
     <Stack spacing={6} align="center"> 
      
-        <Image mt={"20px"} align="center" width="80%" src={logo} />
-    
+        <Text mt={"40px"} fontSize="72px" fontWeight="bold" textAlign="center" color="white">The Pendings</Text>
 
       <Heading mt={6} mb={6} textAlign="center" size="md">
       </Heading>
@@ -178,7 +177,7 @@ function App() {
               />
             
               <Text align={"center"} fontSize="lg" fontWeight="bold">It all started with a pending transaction.</Text>
-              <Text align={"center"} fontSize="lg" fontWeight="bold">A force of energy that began our journey from an idea to an empire.</Text>
+              <Text align={"center"} fontSize="lg" fontWeight="bold">A force of energy that began our journey from idea to empire.</Text>
               <Text align={"center"} fontSize="lg" fontWeight="bold">Energy moves from one peer to another.</Text>
               <Text align={"center"} fontSize="lg" fontWeight="bold">Degenerates dance around the endless spiral of greed and fear.</Text>
               <Box >   
