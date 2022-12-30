@@ -98,7 +98,7 @@ function App() {
   const { data: claimData, error: claimError, isError: claimIsError, isIdle: claimIsIdle, write: writeClaim, isLoading: claimIsLoading } = useContractWrite({
       mode: 'recklesslyUnprepared', //lol yes i am
       functionName: 'mintPending',   
-      args: [mintQuantity],  
+      args: [],  
       address: NFT_ADDRESS,
       abi: NFT_ABI,
       enabled: false, 
