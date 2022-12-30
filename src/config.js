@@ -1,7 +1,7 @@
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
-export const NFT_ADDRESS = "0x5d087f4db1f2C70cA776442e20Bb652D911d25D7";
-export const NFT_CHAINID = 5; //will be mainnet
-export const NFT_CHAINID_STRING = "goerli";
+export const NFT_ADDRESS = "0x79C2dbC3cED9b873eC0E58d294313c7194C6C4A3";
+export const NFT_CHAINID = 1; //will be mainnet
+export const NFT_CHAINID_STRING = "mainnet";
 
 export const NFT_ABI = [
   {
@@ -13,21 +13,16 @@ export const NFT_ABI = [
       },
       { internalType: "string", name: "_initBaseURI", type: "string" },
       { internalType: "string", name: "_initNotRevealedUri", type: "string" },
-      { internalType: "uint256", name: "_publicMintLimit", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
   { inputs: [], name: "ForwardFailed", type: "error" },
-  { inputs: [], name: "InsufficientPayment", type: "error" },
   { inputs: [], name: "MaxSupplyReached", type: "error" },
   { inputs: [], name: "MintIsClosed", type: "error" },
   { inputs: [], name: "PublicConditionsNotMet", type: "error" },
   { inputs: [], name: "QueryForNonexistentToken", type: "error" },
-  { inputs: [], name: "TryingToMintZero", type: "error" },
-  { inputs: [], name: "TxWillExceedMaxSupply", type: "error" },
   { inputs: [], name: "WhitelistConditionsNotMet", type: "error" },
-  { inputs: [], name: "YouGreedyMinter", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -123,23 +118,6 @@ export const NFT_ABI = [
   },
   {
     inputs: [
-      { internalType: "address", name: "_to", type: "address" },
-      { internalType: "uint256", name: "_qty", type: "uint256" },
-    ],
-    name: "adminMint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
-    name: "amountMinted",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
@@ -208,7 +186,7 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_qty", type: "uint256" }],
+    inputs: [],
     name: "mintPending",
     outputs: [],
     stateMutability: "payable",
@@ -252,13 +230,6 @@ export const NFT_ABI = [
   {
     inputs: [],
     name: "publicMintCost",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "publicMintLimit",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -373,15 +344,6 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "_publicMintLimit", type: "uint256" },
-    ],
-    name: "setPublicMintLimit",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "bytes4", name: "interfaceId", type: "bytes4" }],
     name: "supportsInterface",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
@@ -469,7 +431,7 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "_to", type: "address" }],
+    inputs: [],
     name: "withdrawEthFromContract",
     outputs: [],
     stateMutability: "nonpayable",
