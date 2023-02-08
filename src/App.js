@@ -42,8 +42,7 @@ import {
 } from '@chakra-ui/react'
 
 //locals
-import logo from './pendings3.png'
-import { NFT_ADDRESS, NFT_ABI, NFT_CHAINID } from './config.js'
+import { ENDPOINT, NFT_ADDRESS, NFT_ABI, NFT_CHAINID } from './config.js'
 
 
 function App() {
@@ -52,9 +51,12 @@ function App() {
   let [mintSuccess, setMintSuccess] = useState(false);
   let [isMinting, setIsMinting] = useState(false);
   let [mintQuantity, setMintQuantity] = useState(1);
-  let [mintPriceInWei, setMintPriceInWei] = useState("25000000000000000");
-  let [mintPriceInEther, setMintPriceInEther] = useState("0.025");
-  let [displayEthPrice, setDisplayEthPrice] = useState(0.025);
+  let [mintPriceInWei, setMintPriceInWei] = useState("50000000000000000");
+  let [mintPriceInEther, setMintPriceInEther] = useState("0.05");
+  let [displayEthPrice, setDisplayEthPrice] = useState(0.05);
+  let [thisLeaf, setThisLeaf] = useState(0);
+  let [thisProof, setThisProof] = useState(0);
+  let [thisIsOnWL, setThisIsOnWL] = useState(false);
 
   const buttonBg = useColorModeValue("rgb(255, 255, 255)","rgb(255, 255, 255)")
   const buttonText = useColorModeValue("rgb(3, 3, 3)","rgb(3, 3, 3)")
@@ -66,6 +68,48 @@ function App() {
       toggleColorMode()
     }
   }, [])
+
+  useEffect(()=>{   
+    //prevent default
+    fetch(ENDPOINT+'whitelistCheck/'+address)
+        .then(response1 => response1.json())
+        .then(response1 => {
+            console.log("response1: ", response1)
+            console.log("typeof response1:" , typeof response1.verdict)
+            setThisIsOnWL(response1.verdict);
+            if(response1.verdict){
+                fetch(ENDPOINT+'merkleStuff/'+address)
+                .then(response2 => response2.json())
+                .then(response2 => {
+                    console.log("response2: ", response2)
+                    setThisLeaf(response2.leaf);
+                    setThisProof(response2.proof);
+                })   
+            }
+        })    
+        .catch(err => console.error(err));
+  },[])
+
+  useEffect(()=>{    
+    console.log("address changed")
+      fetch(ENDPOINT+'whitelistCheck/'+address)
+          .then(response1 => response1.json())
+          .then(response1 => {
+              console.log("response1: ", response1)
+              console.log("typeof response1:" , typeof response1.verdict)
+              setThisIsOnWL(response1.verdict);
+              if(response1.verdict){
+                  fetch(ENDPOINT+'merkleStuff/'+address)
+                  .then(response2 => response2.json())
+                  .then(response2 => {
+                      console.log("response2: ", response2.proof)
+                      setThisLeaf(response2.leaf);
+                      setThisProof(response2.proof);
+                  })   
+              }
+          })    
+          .catch(err => console.error(err));
+  },[address])
 
 
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
@@ -90,6 +134,21 @@ function App() {
       })    
   }
 
+  const handleInitiateWhitelistMint = (e) => {
+    console.log("handleWhitelistMint entered")
+    e.preventDefault();
+    if(chain.chainId !== NFT_CHAINID){
+        switchNetwork(NFT_CHAINID)
+    }
+    writeClaimWL({
+        recklesslySetUnpreparedOverrides: {
+            from: address,
+            value: mintPriceInWei,
+            // args: [1,1],
+        }            
+    })    
+}
+
   const handleMintQuantityChange = (value) => {
       setMintQuantity(value);
       setDisplayEthPrice((value * mintPriceInEther).toFixed(3));
@@ -97,8 +156,8 @@ function App() {
 
   const { data: claimData, error: claimError, isError: claimIsError, isIdle: claimIsIdle, write: writeClaim, isLoading: claimIsLoading } = useContractWrite({
       mode: 'recklesslyUnprepared', //lol yes i am
-      functionName: 'mintPending',   
-      args: [],  
+      functionName: 'mintPublic',   
+      args: [mintQuantity],  
       address: NFT_ADDRESS,
       abi: NFT_ABI,
       enabled: false, 
@@ -113,24 +172,33 @@ function App() {
       }
   })
 
+  //merkle mint
+  const { data: claimDataWL, error: claimErrorWL, isError: claimIsErrorWL, isIdle: claimIsIdleWL, write: writeClaimWL, isLoading: claimIsLoadingWL } = useContractWrite({
+    mode: 'recklesslyUnprepared', //lol yes i am
+    functionName: 'mintWhitelist',     
+    address: NFT_ADDRESS,
+    abi: NFT_ABI,
+    enabled: false, 
+    chainId: NFT_CHAINID,
+    args: [mintQuantity,thisProof, thisLeaf],
+  })
+
   useContractReads({
     contracts: [
         {
             address: NFT_ADDRESS,
             abi: NFT_ABI,
-            functionName: 'totalMintedSoFar',
+            functionName: 'getTotalMintedSoFar',
             args: [],
         },
         {
           address: NFT_ADDRESS,
           abi: NFT_ABI,
-          functionName: 'publicMintCost',
+          functionName: 'publicMintPrice',
           args: [],
         },
     ],
-    watch: true,
-    cacheOnBlock: true,
-    cacheTime: 2_000,
+    // watch: true,
     enabled: true,
     onSuccess(data){
         setAmountMinted(parseInt(data[0]._hex,16));     
@@ -154,7 +222,7 @@ function App() {
   return (
     <Stack spacing={6} align="center"> 
      
-        <Text mt={"40px"} fontSize="72px" fontWeight="bold" textAlign="center" color="white">The Pendings</Text>
+        <Text mt={"40px"} fontSize="72px" fontWeight="bold" textAlign="center" color="white">Mint Test Page</Text>
 
       <Heading mt={6} mb={6} textAlign="center" size="md">
       </Heading>
@@ -169,21 +237,12 @@ function App() {
           >
           <CardBody>
             <Stack mt={"20px"} align='center'>
-              <Image 
-                maxW={{ base: '100%', sm: '300px' }}
-                align={"center"} 
-                src={"https://media3.giphy.com/media/tA4R6biK5nlBVXeR7w/giphy.gif?cid=790b76116355b815c67362ecb970a6e3ece310cd16f384ae&rid=giphy.gif&ct=g"}
-                borderRadius="20px"
-              />
-            
-              <Text align={"center"} fontSize="lg" fontWeight="bold">It all started with a pending transaction.</Text>
-              <Text align={"center"} fontSize="lg" fontWeight="bold">A force of energy that began our journey from idea to empire.</Text>
-              <Text align={"center"} fontSize="lg" fontWeight="bold">Energy moves from one peer to another.</Text>
-              <Text align={"center"} fontSize="lg" fontWeight="bold">Degenerates dance around the endless spiral of greed and fear.</Text>
+
               <Box >   
                 <Text align={"center"} mt={"20px"} fontSize="lg" fontWeight="bold">Mint Price: {mintPriceInEther} ETH</Text>           
-                <Text align={"center"} mt={"10px"} mb={"20px"} fontSize="lg" fontWeight="bold">Amount Minted: {amountMinted} / 999</Text>
+                <Text align={"center"} mt={"10px"} mb={"20px"} fontSize="lg" fontWeight="bold">Amount Minted: {amountMinted} / N</Text>
               </Box>
+
               {!isConnected ?
 
                 connectors.map((connector) => (
@@ -200,7 +259,7 @@ function App() {
                   )) :
 
                   connectors.map((connector) => (
-                    <Button
+                    <><Button
                       width={300}
                       disabled={!connector.ready}
                       key={connector.id}
@@ -210,6 +269,18 @@ function App() {
                     >
                       { mintSuccess ? (isMinting ? <Spinner /> : "Success!") : `Mint ${mintQuantity} for ${mintPriceInEther} ETH` }
                     </Button>
+
+                    <Button
+                      width={300}
+                      disabled={!connector.ready}
+                      key={connector.id+1}
+                      onClick={handleInitiateWhitelistMint}
+                      bgColor={buttonBg}
+                      textColor={buttonText}
+                    >
+                      { mintSuccess ? (isMinting ? <Spinner /> : "Success!") : `Whitelist Mint ${mintQuantity} for ${mintPriceInEther} ETH` }
+                    </Button></>
+
                   ))
                 
                 }

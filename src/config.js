@@ -1,28 +1,27 @@
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
-export const NFT_ADDRESS = "0x79C2dbC3cED9b873eC0E58d294313c7194C6C4A3";
-export const NFT_CHAINID = 1; //will be mainnet
-export const NFT_CHAINID_STRING = "mainnet";
+export const NFT_ADDRESS = "0xF9F4cdBCF9F49f1598FB6908d502096C88AF6c65";
+export const NFT_CHAINID = 5; //will be mainnet
+export const NFT_CHAINID_STRING = "goerli";
+export const ENDPOINT =
+  "https://p85i0tk9b8.execute-api.us-east-1.amazonaws.com/staging/";
 
 export const NFT_ABI = [
-  {
-    inputs: [
-      {
-        internalType: "address payable",
-        name: "_paymentSplitterAddress",
-        type: "address",
-      },
-      { internalType: "string", name: "_initBaseURI", type: "string" },
-      { internalType: "string", name: "_initNotRevealedUri", type: "string" },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
+  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "CantMintZero", type: "error" },
   { inputs: [], name: "ForwardFailed", type: "error" },
+  { inputs: [], name: "InsufficientFunds", type: "error" },
+  { inputs: [], name: "MathError", type: "error" },
   { inputs: [], name: "MaxSupplyReached", type: "error" },
+  { inputs: [], name: "MaxSupplyWillBeReached", type: "error" },
   { inputs: [], name: "MintIsClosed", type: "error" },
+  { inputs: [], name: "NotOnWhitelist", type: "error" },
+  {
+    inputs: [{ internalType: "address", name: "operator", type: "address" }],
+    name: "OperatorNotAllowed",
+    type: "error",
+  },
   { inputs: [], name: "PublicConditionsNotMet", type: "error" },
   { inputs: [], name: "QueryForNonexistentToken", type: "error" },
-  { inputs: [], name: "WhitelistConditionsNotMet", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -104,6 +103,19 @@ export const NFT_ABI = [
   },
   { stateMutability: "payable", type: "fallback" },
   {
+    inputs: [],
+    name: "OPERATOR_FILTER_REGISTRY",
+    outputs: [
+      {
+        internalType: "contract IOperatorFilterRegistry",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address[]",
@@ -111,14 +123,21 @@ export const NFT_ABI = [
         type: "address[]",
       },
     ],
-    name: "addToWhitelist",
+    name: "addToWhitelistManually",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
+    inputs: [],
+    name: "amountMinted",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
-      { internalType: "address", name: "to", type: "address" },
+      { internalType: "address", name: "operator", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
     name: "approve",
@@ -134,23 +153,16 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "beforeTokenTransferHandler",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "currentTokenId",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "getApproved",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalMintedSoFar",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -165,36 +177,65 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "_addr", type: "address" }],
-    name: "isOnWhitelist",
+    inputs: [{ internalType: "address", name: "_address", type: "address" }],
+    name: "isOnWhitelistManualAdd",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
-    name: "isWhitelisted",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "maxSupply",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "mintPending",
+    inputs: [
+      { internalType: "uint256", name: "_amount", type: "uint256" },
+      { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
+      { internalType: "bytes32", name: "_leaf", type: "bytes32" },
+    ],
+    name: "mint",
     outputs: [],
     stateMutability: "payable",
     type: "function",
   },
   {
     inputs: [],
-    name: "mintPhase",
+    name: "mintLimitPerTxnAndWalletPublic",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mintLimitPerTxnAndWalletWhitelist",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
+    name: "mintPublic",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_amount", type: "uint256" },
+      { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
+      { internalType: "bytes32", name: "_leaf", type: "bytes32" },
+    ],
+    name: "mintWhitelist",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "mintedByAddressPublic",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "mintedByAddressWhitelist",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -229,7 +270,14 @@ export const NFT_ABI = [
   },
   {
     inputs: [],
-    name: "publicMintCost",
+    name: "publicMintIsOpen",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "publicMintPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -297,41 +345,6 @@ export const NFT_ABI = [
   },
   {
     inputs: [
-      { internalType: "address", name: "handlerAddress", type: "address" },
-    ],
-    name: "setBeforeTokenTransferHandler",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "_phase", type: "uint256" }],
-    name: "setMintPhase",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "_whitelistMintCost", type: "uint256" },
-      { internalType: "uint256", name: "_publicMintCost", type: "uint256" },
-    ],
-    name: "setMintPrices",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "string", name: "_notRevealedURI", type: "string" },
-    ],
-    name: "setNotRevealedURI",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "address payable",
         name: "_paymentSplitterAddress",
@@ -339,6 +352,56 @@ export const NFT_ABI = [
       },
     ],
     name: "setPaymentSplitterAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_publicMintPrice", type: "uint256" },
+    ],
+    name: "setPublicMintPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "string", name: "_uri", type: "string" }],
+    name: "setUnrevealedBaseURI",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bool", name: "_whitelistMintIsOpen", type: "bool" },
+    ],
+    name: "setWhitelistMintIsOpen",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_whitelistMintPrice", type: "uint256" },
+    ],
+    name: "setWhitelistMintPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bytes32", name: "_whitelistRoot", type: "bytes32" },
+    ],
+    name: "setWhitelistRoot",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bool", name: "_publicMintIsOpen", type: "bool" }],
+    name: "setpublicMintIsOpen",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -358,33 +421,9 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "index", type: "uint256" }],
-    name: "tokenByIndex",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "owner", type: "address" },
-      { internalType: "uint256", name: "index", type: "uint256" },
-    ],
-    name: "tokenOfOwnerByIndex",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "tokenURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "totalMintedSoFar",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -414,9 +453,37 @@ export const NFT_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+    name: "uri",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
-    name: "whitelistMintCost",
+    name: "whitelistMintIsOpen",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "whitelistMintPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "whitelistRoot",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "whitelistStatusManualAdd",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
