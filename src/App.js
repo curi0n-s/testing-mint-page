@@ -51,12 +51,13 @@ function App() {
   let [mintSuccess, setMintSuccess] = useState(false);
   let [isMinting, setIsMinting] = useState(false);
   let [mintQuantity, setMintQuantity] = useState(1);
-  let [mintPriceInWei, setMintPriceInWei] = useState("50000000000000000");
-  let [mintPriceInEther, setMintPriceInEther] = useState("0.05");
-  let [displayEthPrice, setDisplayEthPrice] = useState(0.05);
+  let [mintPriceInWei, setMintPriceInWei] = useState("69420000000000000");
+  let [mintPriceInEther, setMintPriceInEther] = useState("0.069420");
+  let [displayEthPrice, setDisplayEthPrice] = useState(0.069420);
   let [thisLeaf, setThisLeaf] = useState(0);
   let [thisProof, setThisProof] = useState(0);
   let [thisIsOnWL, setThisIsOnWL] = useState(false);
+  let [errorText, setErrorText] = useState("");
 
   const buttonBg = useColorModeValue("rgb(255, 255, 255)","rgb(255, 255, 255)")
   const buttonText = useColorModeValue("rgb(3, 3, 3)","rgb(3, 3, 3)")
@@ -157,11 +158,15 @@ function App() {
   const { data: claimData, error: claimError, isError: claimIsError, isIdle: claimIsIdle, write: writeClaim, isLoading: claimIsLoading } = useContractWrite({
       mode: 'recklesslyUnprepared', //lol yes i am
       functionName: 'mintPublic',   
-      args: [mintQuantity],  
+      args: [],  
       address: NFT_ADDRESS,
       abi: NFT_ABI,
       enabled: false, 
       chainId: NFT_CHAINID,
+      onError(error){
+        console.log("error: ", error)
+        setErrorText(`Public: ${error.error.message}`)
+      }
   })
 
   const {isSuccess: waitClaimIsSuccess, isLoading: waitClaimIsLoading, isFetching: claimIsFetching, refetch: refetchClaim} = useWaitForTransaction({
@@ -180,7 +185,11 @@ function App() {
     abi: NFT_ABI,
     enabled: false, 
     chainId: NFT_CHAINID,
-    args: [mintQuantity,thisProof, thisLeaf],
+    args: [thisProof, thisLeaf],
+    onError(error){
+        console.log("error: ", error)
+        setErrorText(`You're likely not on the whitelist or have minted your limit.`)
+    }
   })
 
   useContractReads({
@@ -210,7 +219,8 @@ function App() {
         console.log(`mintprice in ether: ${mintPriceInEther}`)       
     },
     onError(data){
-        console.log(`message`)
+        console.log(data.message)
+        setErrorText(data.message);
     }
   })
 
@@ -284,6 +294,7 @@ function App() {
                   ))
                 
                 }
+                <Text align={"center"} mt={"20px"} color="tomato" fontSize="lg" fontWeight="bold">{errorText}</Text>
             </Stack>
           </CardBody>  
         </Card>

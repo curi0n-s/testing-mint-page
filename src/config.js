@@ -1,9 +1,8 @@
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
-export const NFT_ADDRESS = "0xF9F4cdBCF9F49f1598FB6908d502096C88AF6c65";
+export const NFT_ADDRESS = "0x4FfD20B3bE12f3d0c66B81DC069BA6C54D3CE4f3";
 export const NFT_CHAINID = 5; //will be mainnet
 export const NFT_CHAINID_STRING = "goerli";
-export const ENDPOINT =
-  "https://p85i0tk9b8.execute-api.us-east-1.amazonaws.com/staging/";
+export const ENDPOINT = "https://api.theconnors.xyz/";
 
 export const NFT_ABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
@@ -185,7 +184,6 @@ export const NFT_ABI = [
   },
   {
     inputs: [
-      { internalType: "uint256", name: "_amount", type: "uint256" },
       { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
       { internalType: "bytes32", name: "_leaf", type: "bytes32" },
     ],
@@ -196,20 +194,20 @@ export const NFT_ABI = [
   },
   {
     inputs: [],
-    name: "mintLimitPerTxnAndWalletPublic",
+    name: "mintLimitPerWalletPublic",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "mintLimitPerTxnAndWalletWhitelist",
+    name: "mintLimitPerWalletWhitelist",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
+    inputs: [],
     name: "mintPublic",
     outputs: [],
     stateMutability: "payable",
@@ -217,7 +215,6 @@ export const NFT_ABI = [
   },
   {
     inputs: [
-      { internalType: "uint256", name: "_amount", type: "uint256" },
       { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
       { internalType: "bytes32", name: "_leaf", type: "bytes32" },
     ],
@@ -278,6 +275,13 @@ export const NFT_ABI = [
   {
     inputs: [],
     name: "publicMintPrice",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "publicSupply",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -484,6 +488,13 @@ export const NFT_ABI = [
     inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "whitelistStatusManualAdd",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "whitelistSupply",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
