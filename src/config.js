@@ -1,5 +1,5 @@
 export const INFURA_API_KEY = "f45ec1b38a7941229ee4ee8a49bf4e1c";
-export const NFT_ADDRESS = "0x4FfD20B3bE12f3d0c66B81DC069BA6C54D3CE4f3";
+export const NFT_ADDRESS = "0x5013de86ee7c0184c01B3401144ba4728A2B8794";
 export const NFT_CHAINID = 5; //will be mainnet
 export const NFT_CHAINID_STRING = "goerli";
 export const ENDPOINT = "https://api.theconnors.xyz/";
@@ -115,19 +115,6 @@ export const NFT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "_whitelistAddresses",
-        type: "address[]",
-      },
-    ],
-    name: "addToWhitelistManually",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "amountMinted",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -171,13 +158,6 @@ export const NFT_ABI = [
       { internalType: "address", name: "operator", type: "address" },
     ],
     name: "isApprovedForAll",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "_address", type: "address" }],
-    name: "isOnWhitelistManualAdd",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
@@ -481,13 +461,6 @@ export const NFT_ABI = [
     inputs: [],
     name: "whitelistRoot",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
-    name: "whitelistStatusManualAdd",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },

@@ -14,7 +14,7 @@ import {
   useContractReads, 
   useContractWrite,
   useWaitForTransaction,
-  useNetwork
+  useNetwork,
 } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { 
@@ -63,12 +63,26 @@ function App() {
   const buttonText = useColorModeValue("rgb(3, 3, 3)","rgb(3, 3, 3)")
 
   const { colorMode, toggleColorMode } = useColorMode()
+  const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
+  const { address, connector, isConnected } = useAccount()
+  const { disconnect } = useDisconnect()
 
+  const { chain } = useNetwork();
+  const { chains, error: switchNetworkError, isLoading: switchNetworkIsLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
   useEffect(() => {
     if(colorMode === "light"){
       toggleColorMode()
     }
   }, [])
+
+  useEffect(() => {
+    if(isConnected && chain.chainId !== NFT_CHAINID){
+      //connect wallet and switch network
+      alert("Connect to Goerli!");
+      // connect(InjectedConnector)
+      // switchNetwork(NFT_CHAINID)
+    }
+  },[])
 
   useEffect(()=>{   
     //prevent default
@@ -112,13 +126,6 @@ function App() {
           .catch(err => console.error(err));
   },[address])
 
-
-  const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
-  const { address, connector, isConnected } = useAccount()
-  const { disconnect } = useDisconnect()
-
-  const { chain } = useNetwork();
-  const { chains, error: switchNetworkError, isLoading: switchNetworkIsLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
 
   const handleInitiateClaim = (e) => {
       console.log("handleInitiateClaim entered")
@@ -243,11 +250,11 @@ function App() {
           overflow='hidden'
           variant='outline'
           borderRadius='20px'
-          maxW={{ base: '60%', sm: '800px' }}
+          maxW={{ base: '80%', sm: '1000px' }}
           >
           <CardBody>
             <Stack mt={"20px"} align='center'>
-
+              <Image src={"cat.png"} alt="NFT" width={619} height={423} />
               <Box >   
                 <Text align={"center"} mt={"20px"} fontSize="lg" fontWeight="bold">Mint Price: {mintPriceInEther} ETH</Text>           
                 <Text align={"center"} mt={"10px"} mb={"20px"} fontSize="lg" fontWeight="bold">Amount Minted: {amountMinted} / N</Text>
@@ -257,7 +264,7 @@ function App() {
 
                 connectors.map((connector) => (
                     <Button
-                      width={300}
+                      width={500}
                       disabled={false}
                       key={connector.id}
                       onClick={() => connect({ connector })}
@@ -270,7 +277,7 @@ function App() {
 
                   connectors.map((connector) => (
                     <><Button
-                      width={300}
+                      width={500}
                       disabled={!connector.ready}
                       key={connector.id}
                       onClick={handleInitiateClaim}
@@ -281,7 +288,7 @@ function App() {
                     </Button>
 
                     <Button
-                      width={300}
+                      width={500}
                       disabled={!connector.ready}
                       key={connector.id+1}
                       onClick={handleInitiateWhitelistMint}
@@ -298,15 +305,7 @@ function App() {
             </Stack>
           </CardBody>  
         </Card>
-
       </Box>
-      {/* <footer>
-        <Button onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-        </Button>
-      </footer> */}
-    {/* <Heading mt={6} mb={6} textAlign="center" size="sm">TOS Link Here</Heading>           */}
-
     </Stack>
   );
 }
